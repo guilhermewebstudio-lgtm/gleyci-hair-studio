@@ -45,6 +45,9 @@
         <button class="<%= lang === 'en' ? 'active' : '' %>" onclick="location.href='/set-lang/en'">EN</button>
       </div>
       <% if (user) { %>
+        <% if (user.is_admin) { %>
+          <a href="/gestao" class="pill-btn" style="text-decoration:none; display:inline-block;"><%= lang === 'pt' ? 'Gestão' : 'Admin' %></a>
+        <% } %>
         <span style="color:#FBF4EA; font-size:0.85rem; font-family:'Space Mono',monospace; cursor:pointer;" onclick="openMyBookings()"><%= user.name.split(' ')[0] %></span>
         <button class="pill-btn" onclick="logout()"><%= T.logout %></button>
       <% } else { %>
