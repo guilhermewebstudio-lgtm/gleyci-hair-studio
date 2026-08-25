@@ -1,5 +1,19 @@
-// ---- Fade-in ao scroll ----
+// ---- Abertura animada ----
 document.addEventListener('DOMContentLoaded', () => {
+  const intro = document.getElementById('introOverlay');
+  if (intro) {
+    setTimeout(() => intro.classList.add('intro-done'), 2400);
+  }
+
+  // Navbar: fundo sólido ao fazer scroll
+  const nav = document.getElementById('mainNav');
+  if (nav) {
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 40);
+    });
+  }
+
+  // Fade-in ao scroll
   const sections = document.querySelectorAll('.fade-section');
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {

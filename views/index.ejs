@@ -5,13 +5,22 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Hair Specialist Gleyci Felix | Lisboa</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500;1,9..144,600&family=Work+Sans:wght@300;400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
 
-  <nav>
-    <div class="logo">GLEYCI FELIX</div>
+  <!-- ABERTURA / INTRO ANIMADA -->
+  <div class="intro-overlay" id="introOverlay">
+    <div class="intro-wordmark">Gleyci Felix</div>
+    <div class="intro-sub">Hair Specialist · Lisboa</div>
+    <div class="intro-swatches">
+      <span></span><span></span><span></span><span></span><span></span><span></span>
+    </div>
+  </div>
+
+  <nav id="mainNav">
+    <div class="logo">Gleyci Felix</div>
     <ul>
       <li><a href="#home"><%= T.nav_home %></a></li>
       <li><a href="#gallery"><%= T.nav_gallery %></a></li>
@@ -21,7 +30,7 @@
     <div class="nav-actions">
       <span class="lang-switch" onclick="location.href='/set-lang/<%= lang === 'pt' ? 'en' : 'pt' %>'"><%= lang === 'pt' ? 'EN' : 'PT' %></span>
       <% if (user) { %>
-        <span style="color:#F7F1E8; font-size:0.9rem;"><%= user.name.split(' ')[0] %></span>
+        <span style="color:#F5EDE0; font-size:0.85rem; font-family:'Space Mono',monospace;"><%= user.name.split(' ')[0] %></span>
         <button onclick="logout()"><%= T.logout %></button>
       <% } else { %>
         <button onclick="openModal('login')"><%= T.login %></button>
@@ -31,20 +40,28 @@
 
   <section class="hero" id="home">
     <div class="hero-content">
-      <span><%= T.hero_tag %></span>
-      <h1><%= T.hero_title %></h1>
+      <span class="eyebrow"><%= T.hero_tag %></span>
+      <h1><%= lang === 'pt' ? 'Beleza e cor com técnica ' : 'Beauty and color with the ' %><em>Toni&Guy</em><%= lang === 'pt' ? '' : ' technique' %></h1>
       <p><%= T.hero_sub %></p>
       <button class="hero-btn" onclick="document.getElementById('booking').scrollIntoView({behavior:'smooth'})"><%= T.hero_btn %></button>
+    </div>
+    <div class="hero-fan" aria-hidden="true">
+      <div class="fan-chip"><span class="chip-code">N·01</span></div>
+      <div class="fan-chip"><span class="chip-code">N·02</span></div>
+      <div class="fan-chip"><span class="chip-code">N·03</span></div>
+      <div class="fan-chip"><span class="chip-code">N·04</span></div>
+      <div class="fan-chip"><span class="chip-code">N·05</span></div>
+      <div class="fan-chip"><span class="chip-code">N·06</span></div>
     </div>
   </section>
 
   <section id="gallery" class="fade-section">
     <div class="section-title">
-      <span><%= T.gallery_tag %></span>
+      <span class="eyebrow"><%= T.gallery_tag %></span>
       <h2><%= T.gallery_title %></h2>
+      <div class="section-line"></div>
     </div>
     <div class="gallery-grid" id="galleryGrid">
-      <!-- Placeholders: serão substituídos pelas fotos/vídeos reais do Instagram -->
       <div class="gallery-item"><img src="/images/placeholder-1.jpg" alt="Trabalho de cabelo"></div>
       <div class="gallery-item"><img src="/images/placeholder-2.jpg" alt="Trabalho de cabelo"></div>
       <div class="gallery-item"><img src="/images/placeholder-3.jpg" alt="Trabalho de cabelo"></div>
@@ -54,18 +71,23 @@
     </div>
   </section>
 
-  <section id="services" class="fade-section" style="background:white;">
+  <section id="services" class="fade-section" style="background:#FBF7EF;">
     <div class="section-title">
-      <span><%= T.services_tag %></span>
+      <span class="eyebrow"><%= T.services_tag %></span>
       <h2><%= T.services_title %></h2>
+      <div class="section-line"></div>
     </div>
     <div class="services-grid">
-      <% services.forEach(s => { %>
+      <% const tones = ['#3A2418','#6B4A32','#A97C4F','#C89A5B','#DDBD8C','#8B4C36','#A79284','#241A14']; %>
+      <% services.forEach((s, i) => { %>
         <div class="service-card">
+          <div class="tone-bar" style="background:<%= tones[i % tones.length] %>;"></div>
           <h3><%= lang === 'pt' ? s.name_pt : s.name_en %></h3>
           <p><%= lang === 'pt' ? s.description_pt : s.description_en %></p>
-          <div class="price">€<%= parseFloat(s.price).toFixed(0) %></div>
-          <div class="duration"><%= s.duration_minutes %> min</div>
+          <div class="price-row">
+            <span class="price">€<%= parseFloat(s.price).toFixed(0) %></span>
+            <span class="duration"><%= s.duration_minutes %> min</span>
+          </div>
         </div>
       <% }) %>
     </div>
@@ -73,8 +95,9 @@
 
   <section id="booking" class="fade-section">
     <div class="section-title">
-      <span><%= T.booking_tag %></span>
+      <span class="eyebrow"><%= T.booking_tag %></span>
       <h2><%= T.booking_title %></h2>
+      <div class="section-line"></div>
     </div>
     <div class="booking-box">
       <div class="booking-step">
@@ -108,7 +131,7 @@
   </div>
 
   <footer>
-    <div class="logo">GLEYCI FELIX</div>
+    <div class="logo">Gleyci Felix</div>
     <p>Lisboa, Portugal · &copy; <%= new Date().getFullYear() %> Hair Specialist Gleyci Felix. <%= T.footer_rights %></p>
   </footer>
 
