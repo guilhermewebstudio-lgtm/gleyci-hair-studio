@@ -6,63 +6,127 @@
   <title>Gestão | Gleyci Felix</title>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,600;1,9..144,500&family=Work+Sans:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
   <style>
-    :root { --ink:#1B1420; --parchment:#FBF4EA; --gold:#D4AF6A; --wine:#7A2E3A; --line:#E8DCC7; --ok:#4C7A5E; --pending:#B98A2E; --danger:#A5432E; }
+    :root {
+      --ink: #15110D; --ink-2: #221B14; --parchment: #F7F2E9;
+      --gold: #B8935A; --gold-light: #D8BD8C; --wine: #6B3226;
+      --line: #E6DFCF; --text: #221C15; --text-soft: #6B6155;
+      --ok: #4C7A5E; --pending: #B98A2E; --danger: #A5432E;
+    }
     * { margin:0; padding:0; box-sizing:border-box; }
-    body { font-family:'Work Sans', sans-serif; background:var(--parchment); margin:0; padding:40px 5%; color:#241C2B; }
-    h1 { font-family:'Fraunces', serif; font-style:italic; color:var(--ink); margin-bottom:8px; }
-    .sub { color:#6E6072; font-family:'Space Mono', monospace; font-size:0.8rem; margin-bottom:30px; }
-    table { width:100%; border-collapse:collapse; background:white; border-radius:10px; overflow:hidden; box-shadow:0 4px 20px rgba(0,0,0,0.06); }
-    th, td { padding:14px 16px; text-align:left; border-bottom:1px solid var(--line); font-size:0.9rem; vertical-align:middle; }
-    th { background:var(--ink); color:var(--parchment); font-family:'Space Mono',monospace; font-size:0.72rem; text-transform:uppercase; letter-spacing:0.05em; }
-    tr:hover td { background:#fdf9f2; }
-    .badge { background:var(--gold); color:var(--ink); padding:4px 10px; border-radius:20px; font-size:0.76rem; font-weight:600; }
-    .status-badge { display:inline-flex; align-items:center; gap:6px; font-family:'Space Mono',monospace; font-size:0.7rem; text-transform:uppercase; letter-spacing:0.05em; padding:5px 12px; border-radius:20px; }
-    .status-badge.pending { background:rgba(185,138,46,0.15); color:var(--pending); }
-    .status-badge.confirmed { background:rgba(76,122,94,0.15); color:var(--ok); }
+    body { font-family:'Work Sans', sans-serif; background:var(--parchment); color:var(--text); }
+
+    header {
+      background: linear-gradient(165deg, var(--ink) 0%, var(--ink-2) 100%);
+      color: var(--parchment); padding: 26px 5%;
+      display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:16px;
+    }
+    .brand { display:flex; align-items:center; gap:10px; }
+    .brand-mark circle { fill:none; stroke:var(--gold); stroke-width:1; }
+    .brand-mark text { font-family:'Fraunces',serif; font-style:italic; fill:var(--gold); font-size:26px; }
+    .brand-word { font-family:'Fraunces',serif; font-style:italic; font-size:1.1rem; }
+    .header-right { display:flex; align-items:center; gap:14px; }
+    .header-sub { font-family:'Space Mono',monospace; font-size:0.72rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--gold); opacity:0.9; }
+    .back-link {
+      color: var(--parchment); text-decoration:none; border:1px solid var(--gold); border-radius:30px;
+      padding:9px 20px; font-family:'Space Mono',monospace; font-size:0.78rem; letter-spacing:0.05em;
+      transition: background 0.2s, color 0.2s;
+    }
+    .back-link:hover { background:var(--gold); color:var(--ink); }
+
+    main { padding: 44px 5% 80px; }
+    h1 { font-family:'Fraunces', serif; font-style:italic; color:var(--ink); margin-bottom:6px; font-size:1.8rem; }
+    .sub { color:var(--text-soft); font-family:'Space Mono', monospace; font-size:0.78rem; margin-bottom:30px; text-transform:uppercase; letter-spacing:0.05em; }
+
+    .table-wrap { background:white; border-radius:12px; overflow:hidden; box-shadow:0 10px 40px rgba(21,17,13,0.08); }
+    table { width:100%; border-collapse:collapse; }
+    th, td { padding:16px 18px; text-align:left; border-bottom:1px solid var(--line); font-size:0.9rem; vertical-align:middle; }
+    th { background:var(--ink); color:var(--parchment); font-family:'Space Mono',monospace; font-size:0.7rem; text-transform:uppercase; letter-spacing:0.06em; font-weight:400; }
+    tbody tr { transition: background 0.15s; }
+    tbody tr:hover { background:#FBF7EE; }
+    tbody tr:last-child td { border-bottom:none; }
+
+    .badge { background:var(--gold); color:var(--ink); padding:5px 12px; border-radius:20px; font-size:0.74rem; font-weight:600; font-family:'Space Mono',monospace; }
+    .status-badge { display:inline-flex; align-items:center; gap:6px; font-family:'Space Mono',monospace; font-size:0.68rem; text-transform:uppercase; letter-spacing:0.05em; padding:5px 12px; border-radius:20px; }
+    .status-badge.pending { background:rgba(185,138,46,0.14); color:var(--pending); }
+    .status-badge.confirmed { background:rgba(76,122,94,0.14); color:var(--ok); }
+
     .actions { display:flex; gap:8px; }
-    .actions button { border:none; padding:7px 14px; border-radius:20px; font-size:0.78rem; font-weight:600; cursor:pointer; font-family:'Space Mono',monospace; transition:opacity 0.2s; }
-    .actions button:hover { opacity:0.85; }
+    .actions button { border:none; padding:8px 16px; border-radius:20px; font-size:0.76rem; font-weight:600; cursor:pointer; font-family:'Space Mono',monospace; transition:opacity 0.2s, transform 0.2s; }
+    .actions button:hover { opacity:0.88; transform:translateY(-1px); }
     .btn-accept { background:var(--ok); color:white; }
     .btn-reject { background:var(--danger); color:white; }
-    .empty { text-align:center; color:#999; padding:40px; }
+
+    .empty-state { text-align:center; padding:80px 20px; color:var(--text-soft); }
+    .empty-state .icon { font-family:'Fraunces',serif; font-style:italic; font-size:2.4rem; color:var(--gold); margin-bottom:14px; }
+    .empty-state p { font-size:0.95rem; }
+
+    @media (max-width: 800px) {
+      .table-wrap { overflow-x:auto; }
+      table { min-width:760px; }
+    }
   </style>
 </head>
 <body>
-  <h1>Painel de Gestão</h1>
-  <div class="sub">Marcações pendentes e confirmadas</div>
-  <table>
-    <thead>
-      <tr>
-        <th>Estado</th><th>Data</th><th>Hora</th><th>Cliente</th><th>Telefone</th><th>Email</th><th>Serviço</th><th>Ação</th>
-      </tr>
-    </thead>
-    <tbody id="bookingsBody">
-      <% bookings.forEach(b => { %>
-        <tr data-id="<%= b.id %>">
-          <td><span class="status-badge <%= b.status %>"><%= b.status === 'pending' ? 'Pendente' : 'Confirmada' %></span></td>
-          <td><%= new Date(b.booking_date).toLocaleDateString('pt-PT') %></td>
-          <td><%= b.start_time.slice(0,5) %></td>
-          <td><%= b.client_name %></td>
-          <td><%= b.phone || '-' %></td>
-          <td><%= b.email %></td>
-          <td><span class="badge"><%= b.name_pt %></span></td>
-          <td>
-            <% if (b.status === 'pending') { %>
-              <div class="actions">
-                <button class="btn-accept" onclick="actOn(<%= b.id %>, 'accept', this)">Aceitar</button>
-                <button class="btn-reject" onclick="actOn(<%= b.id %>, 'reject', this)">Recusar</button>
-              </div>
-            <% } else { %>
-              —
-            <% } %>
-          </td>
-        </tr>
-      <% }) %>
-    </tbody>
-  </table>
-  <% if (bookings.length === 0) { %>
-    <div class="empty">Sem marcações no momento.</div>
-  <% } %>
+  <header>
+    <div class="brand">
+      <svg class="brand-mark" width="38" height="38" viewBox="0 0 72 72" fill="none">
+        <circle cx="36" cy="36" r="34.5"/>
+        <text x="36" y="46" text-anchor="middle">GF</text>
+      </svg>
+      <span class="brand-word">Gleyci Felix</span>
+    </div>
+    <div class="header-right">
+      <span class="header-sub">Painel de Gestão</span>
+      <a href="/" class="back-link">← Voltar ao site</a>
+    </div>
+  </header>
+
+  <main>
+    <h1>Marcações</h1>
+    <div class="sub">Pendentes e confirmadas</div>
+
+    <% if (bookings.length === 0) { %>
+      <div class="table-wrap">
+        <div class="empty-state">
+          <div class="icon">Sem marcações</div>
+          <p>Assim que alguém pedir uma marcação, aparece aqui para aceitares ou recusares.</p>
+        </div>
+      </div>
+    <% } else { %>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Estado</th><th>Data</th><th>Hora</th><th>Cliente</th><th>Telefone</th><th>Email</th><th>Serviço</th><th>Ação</th>
+            </tr>
+          </thead>
+          <tbody id="bookingsBody">
+            <% bookings.forEach(b => { %>
+              <tr data-id="<%= b.id %>">
+                <td><span class="status-badge <%= b.status %>"><%= b.status === 'pending' ? 'Pendente' : 'Confirmada' %></span></td>
+                <td><%= new Date(b.booking_date).toLocaleDateString('pt-PT') %></td>
+                <td><%= b.start_time.slice(0,5) %></td>
+                <td><%= b.client_name %></td>
+                <td><%= b.phone || '-' %></td>
+                <td><%= b.email %></td>
+                <td><span class="badge"><%= b.name_pt %></span></td>
+                <td>
+                  <% if (b.status === 'pending') { %>
+                    <div class="actions">
+                      <button class="btn-accept" onclick="actOn(<%= b.id %>, 'accept', this)">Aceitar</button>
+                      <button class="btn-reject" onclick="actOn(<%= b.id %>, 'reject', this)">Recusar</button>
+                    </div>
+                  <% } else { %>
+                    —
+                  <% } %>
+                </td>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      </div>
+    <% } %>
+  </main>
 
   <script>
     async function actOn(id, action, btn) {
