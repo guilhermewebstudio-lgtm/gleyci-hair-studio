@@ -163,7 +163,16 @@ app.post('/api/login', async (req, res) => {
     const user = rows[0];
     const match = await bcrypt.compare(password, user.password_hash);
     if (!match) return res.status(401).json({ error: 'Credenciais inválidas.' });
-    req.session.user = { id: user.id, name: user.name, email: user.email, is_admin: user.is_admin };
+
+    // Garante que a conta definida em ADMIN_EMAIL é sempre admin, mesmo que
+    // a conta tenha sido criada depois da última promoção no arranque.
+    let isAdmin = user.is_admin;
+    if (process.env.ADMIN_EMAIL && user.email === process.env.ADMIN_EMAIL && !user.is_admin) {
+      await pool.query('UPDATE users SET is_admin = TRUE WHERE id = $1', [user.id]);
+      isAdmin = true;
+    }
+
+    req.session.user = { id: user.id, name: user.name, email: user.email, is_admin: isAdmin };
     res.json({ success: true, user: req.session.user });
   } catch (err) {
     console.error(err);
