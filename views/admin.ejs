@@ -4,40 +4,80 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Gestão | Gleyci Felix</title>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,600;1,9..144,500&family=Work+Sans:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
   <style>
-    body { font-family: 'Poppins', sans-serif; background: #F7F1E8; margin: 0; padding: 40px 5%; color: #2B211C; }
-    h1 { font-family: 'Playfair Display', serif; color: #4A2E22; margin-bottom: 30px; }
-    table { width: 100%; border-collapse: collapse; background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.06); }
-    th, td { padding: 14px 16px; text-align: left; border-bottom: 1px solid #eee; font-size: 0.92rem; }
-    th { background: #4A2E22; color: white; }
-    tr:hover { background: #fdf9f2; }
-    .badge { background: #C9A15C; color: #1C1512; padding: 4px 10px; border-radius: 20px; font-size: 0.78rem; font-weight: 600; }
+    :root { --ink:#1B1420; --parchment:#FBF4EA; --gold:#D4AF6A; --wine:#7A2E3A; --line:#E8DCC7; --ok:#4C7A5E; --pending:#B98A2E; --danger:#A5432E; }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { font-family:'Work Sans', sans-serif; background:var(--parchment); margin:0; padding:40px 5%; color:#241C2B; }
+    h1 { font-family:'Fraunces', serif; font-style:italic; color:var(--ink); margin-bottom:8px; }
+    .sub { color:#6E6072; font-family:'Space Mono', monospace; font-size:0.8rem; margin-bottom:30px; }
+    table { width:100%; border-collapse:collapse; background:white; border-radius:10px; overflow:hidden; box-shadow:0 4px 20px rgba(0,0,0,0.06); }
+    th, td { padding:14px 16px; text-align:left; border-bottom:1px solid var(--line); font-size:0.9rem; vertical-align:middle; }
+    th { background:var(--ink); color:var(--parchment); font-family:'Space Mono',monospace; font-size:0.72rem; text-transform:uppercase; letter-spacing:0.05em; }
+    tr:hover td { background:#fdf9f2; }
+    .badge { background:var(--gold); color:var(--ink); padding:4px 10px; border-radius:20px; font-size:0.76rem; font-weight:600; }
+    .status-badge { display:inline-flex; align-items:center; gap:6px; font-family:'Space Mono',monospace; font-size:0.7rem; text-transform:uppercase; letter-spacing:0.05em; padding:5px 12px; border-radius:20px; }
+    .status-badge.pending { background:rgba(185,138,46,0.15); color:var(--pending); }
+    .status-badge.confirmed { background:rgba(76,122,94,0.15); color:var(--ok); }
+    .actions { display:flex; gap:8px; }
+    .actions button { border:none; padding:7px 14px; border-radius:20px; font-size:0.78rem; font-weight:600; cursor:pointer; font-family:'Space Mono',monospace; transition:opacity 0.2s; }
+    .actions button:hover { opacity:0.85; }
+    .btn-accept { background:var(--ok); color:white; }
+    .btn-reject { background:var(--danger); color:white; }
+    .empty { text-align:center; color:#999; padding:40px; }
   </style>
 </head>
 <body>
-  <h1>Painel de Gestão — Marcações</h1>
+  <h1>Painel de Gestão</h1>
+  <div class="sub">Marcações pendentes e confirmadas</div>
   <table>
     <thead>
       <tr>
-        <th>Data</th><th>Hora</th><th>Cliente</th><th>Telefone</th><th>Email</th><th>Serviço</th>
+        <th>Estado</th><th>Data</th><th>Hora</th><th>Cliente</th><th>Telefone</th><th>Email</th><th>Serviço</th><th>Ação</th>
       </tr>
     </thead>
-    <tbody>
+    <tbody id="bookingsBody">
       <% bookings.forEach(b => { %>
-        <tr>
+        <tr data-id="<%= b.id %>">
+          <td><span class="status-badge <%= b.status %>"><%= b.status === 'pending' ? 'Pendente' : 'Confirmada' %></span></td>
           <td><%= new Date(b.booking_date).toLocaleDateString('pt-PT') %></td>
           <td><%= b.start_time.slice(0,5) %></td>
           <td><%= b.client_name %></td>
           <td><%= b.phone || '-' %></td>
           <td><%= b.email %></td>
           <td><span class="badge"><%= b.name_pt %></span></td>
+          <td>
+            <% if (b.status === 'pending') { %>
+              <div class="actions">
+                <button class="btn-accept" onclick="actOn(<%= b.id %>, 'accept', this)">Aceitar</button>
+                <button class="btn-reject" onclick="actOn(<%= b.id %>, 'reject', this)">Recusar</button>
+              </div>
+            <% } else { %>
+              —
+            <% } %>
+          </td>
         </tr>
       <% }) %>
-      <% if (bookings.length === 0) { %>
-        <tr><td colspan="6" style="text-align:center; color:#999;">Sem marcações no momento.</td></tr>
-      <% } %>
     </tbody>
   </table>
+  <% if (bookings.length === 0) { %>
+    <div class="empty">Sem marcações no momento.</div>
+  <% } %>
+
+  <script>
+    async function actOn(id, action, btn) {
+      btn.disabled = true;
+      btn.textContent = '…';
+      try {
+        const res = await fetch(`/api/admin/bookings/${id}/${action}`, { method: 'POST' });
+        if (!res.ok) throw new Error('fail');
+        document.querySelector(`tr[data-id="${id}"]`).remove();
+      } catch (e) {
+        alert('Erro ao atualizar. Tenta de novo.');
+        btn.disabled = false;
+        btn.textContent = action === 'accept' ? 'Aceitar' : 'Recusar';
+      }
+    }
+  </script>
 </body>
 </html>

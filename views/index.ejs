@@ -14,17 +14,15 @@
   <div class="intro-overlay" id="introOverlay">
     <div class="intro-logo">
       <svg width="72" height="72" viewBox="0 0 72 72" fill="none">
-        <circle cx="36" cy="36" r="34.5" stroke="#C9A15C" stroke-width="1"/>
-        <circle cx="36" cy="36" r="29.5" stroke="#C9A15C" stroke-width="0.5" opacity="0.5"/>
-        <text x="36" y="46" text-anchor="middle" font-family="Fraunces, serif" font-style="italic" font-size="30" fill="#F6EEE1">GF</text>
+        <circle cx="36" cy="36" r="34.5" stroke="#D4AF6A" stroke-width="1"/>
+        <circle cx="36" cy="36" r="29.5" stroke="#D4AF6A" stroke-width="0.5" opacity="0.5"/>
+        <text x="36" y="46" text-anchor="middle" font-family="Fraunces, serif" font-style="italic" font-size="30" fill="#FBF4EA">GF</text>
       </svg>
     </div>
     <div class="intro-wordmark">Gleyci Felix</div>
     <div class="intro-rule"></div>
     <div class="intro-sub">Hair Specialist · Lisboa</div>
-    <div class="intro-swatches">
-      <span></span><span></span><span></span><span></span><span></span><span></span>
-    </div>
+    <div class="intro-pulse"></div>
   </div>
 
   <nav id="mainNav">
@@ -42,12 +40,15 @@
       <li><a href="#booking"><%= T.nav_booking %></a></li>
     </ul>
     <div class="nav-actions">
-      <span class="lang-switch" onclick="location.href='/set-lang/<%= lang === 'pt' ? 'en' : 'pt' %>'"><%= lang === 'pt' ? 'EN' : 'PT' %></span>
+      <div class="lang-toggle">
+        <button class="<%= lang === 'pt' ? 'active' : '' %>" onclick="location.href='/set-lang/pt'">PT</button>
+        <button class="<%= lang === 'en' ? 'active' : '' %>" onclick="location.href='/set-lang/en'">EN</button>
+      </div>
       <% if (user) { %>
-        <span style="color:#F5EDE0; font-size:0.85rem; font-family:'Space Mono',monospace;"><%= user.name.split(' ')[0] %></span>
-        <button onclick="logout()"><%= T.logout %></button>
+        <span style="color:#FBF4EA; font-size:0.85rem; font-family:'Space Mono',monospace; cursor:pointer;" onclick="openMyBookings()"><%= user.name.split(' ')[0] %></span>
+        <button class="pill-btn" onclick="logout()"><%= T.logout %></button>
       <% } else { %>
-        <button onclick="openModal('login')"><%= T.login %></button>
+        <button class="pill-btn" onclick="openModal('login')"><%= T.login %></button>
       <% } %>
     </div>
   </nav>
@@ -59,14 +60,7 @@
       <p><%= T.hero_sub %></p>
       <button class="hero-btn" onclick="document.getElementById('booking').scrollIntoView({behavior:'smooth'})"><%= T.hero_btn %></button>
     </div>
-    <div class="hero-fan" aria-hidden="true">
-      <div class="fan-chip"><span class="chip-code">N·01</span></div>
-      <div class="fan-chip"><span class="chip-code">N·02</span></div>
-      <div class="fan-chip"><span class="chip-code">N·03</span></div>
-      <div class="fan-chip"><span class="chip-code">N·04</span></div>
-      <div class="fan-chip"><span class="chip-code">N·05</span></div>
-      <div class="fan-chip"><span class="chip-code">N·06</span></div>
-    </div>
+    <div class="scroll-cue" aria-hidden="true"></div>
   </section>
 
   <section id="gallery" class="fade-section">
@@ -76,12 +70,12 @@
       <div class="section-line"></div>
     </div>
     <div class="gallery-grid" id="galleryGrid">
-      <div class="gallery-item"><img src="https://images.unsplash.com/photo-1634449571010-02389ed0f9b0?fm=jpg&q=80&w=800&auto=format&fit=crop" alt="Trabalho de cabelo" loading="lazy"></div>
-      <div class="gallery-item"><img src="https://images.unsplash.com/photo-1734111719430-fe4a3973f8af?fm=jpg&q=80&w=800&auto=format&fit=crop" alt="Trabalho de cabelo" loading="lazy"></div>
-      <div class="gallery-item"><video src="https://assets.mixkit.co/videos/49556/49556-360.mp4" autoplay muted loop playsinline></video></div>
-      <div class="gallery-item"><img src="https://images.unsplash.com/photo-1580618672591-eb180b1a973f?fm=jpg&q=80&w=800&auto=format&fit=crop" alt="Trabalho de cabelo" loading="lazy"></div>
-      <div class="gallery-item"><video src="https://assets.mixkit.co/videos/33257/33257-360.mp4" autoplay muted loop playsinline></video></div>
-      <div class="gallery-item"><img src="https://images.unsplash.com/photo-1700760934268-8aa0ef52ce0a?fm=jpg&q=80&w=800&auto=format&fit=crop" alt="Trabalho de cabelo" loading="lazy"></div>
+      <div class="gallery-item stagger-item"><img src="https://images.unsplash.com/photo-1634449571010-02389ed0f9b0?fm=jpg&q=80&w=800&auto=format&fit=crop" alt="Trabalho de cabelo" loading="lazy"></div>
+      <div class="gallery-item stagger-item"><img src="https://images.unsplash.com/photo-1734111719430-fe4a3973f8af?fm=jpg&q=80&w=800&auto=format&fit=crop" alt="Trabalho de cabelo" loading="lazy"></div>
+      <div class="gallery-item stagger-item"><video src="https://assets.mixkit.co/videos/49556/49556-360.mp4" autoplay muted loop playsinline></video></div>
+      <div class="gallery-item stagger-item"><img src="https://images.unsplash.com/photo-1580618672591-eb180b1a973f?fm=jpg&q=80&w=800&auto=format&fit=crop" alt="Trabalho de cabelo" loading="lazy"></div>
+      <div class="gallery-item stagger-item"><video src="https://assets.mixkit.co/videos/33257/33257-360.mp4" autoplay muted loop playsinline></video></div>
+      <div class="gallery-item stagger-item"><img src="https://images.unsplash.com/photo-1700760934268-8aa0ef52ce0a?fm=jpg&q=80&w=800&auto=format&fit=crop" alt="Trabalho de cabelo" loading="lazy"></div>
     </div>
   </section>
 
@@ -92,10 +86,10 @@
       <div class="section-line"></div>
     </div>
     <div class="services-grid">
-      <% const tones = ['#3A2418','#6B4A32','#A97C4F','#C89A5B','#DDBD8C','#8B4C36','#A79284','#241A14']; %>
+      <% const tones = ['#3A2418','#6B4A32','#A97C4F','#D4AF6A','#C97B63','#7A2E3A','#8B4C36','#241A14']; %>
       <% services.forEach((s, i) => { %>
-        <div class="service-card">
-          <div class="tone-bar" style="background:<%= tones[i % tones.length] %>;"></div>
+        <div class="service-card stagger-item">
+          <div class="tone-dot" style="background:<%= tones[i % tones.length] %>;"></div>
           <h3><%= lang === 'pt' ? s.name_pt : s.name_en %></h3>
           <p><%= lang === 'pt' ? s.description_pt : s.description_en %></p>
           <div class="price-row">
@@ -114,8 +108,13 @@
       <div class="section-line"></div>
     </div>
     <div class="booking-box">
+      <div class="booking-progress">
+        <div class="dot" id="progDot1"><i></i></div>
+        <div class="dot" id="progDot2"><i></i></div>
+        <div class="dot" id="progDot3"><i></i></div>
+      </div>
       <div class="booking-step">
-        <label><%= T.step_service %></label>
+        <label><span class="step-num">1</span><%= T.step_service %></label>
         <select id="serviceSelect">
           <option value=""><%= T.select_placeholder %></option>
           <% services.forEach(s => { %>
@@ -124,27 +123,25 @@
         </select>
       </div>
       <div class="booking-step">
-        <label><%= T.step_date %></label>
+        <label><span class="step-num">2</span><%= T.step_date %></label>
         <input type="date" id="dateInput">
       </div>
       <div class="booking-step">
-        <label><%= T.step_time %></label>
+        <label><span class="step-num">3</span><%= T.step_time %></label>
         <div class="slots-grid" id="slotsGrid"></div>
       </div>
       <button class="confirm-btn" id="confirmBtn" onclick="confirmBooking()" disabled><%= T.confirm %></button>
+      <div class="booking-note"><%= T.booking_note %></div>
     </div>
   </section>
 
   <div class="floating-buttons">
-    <a href="https://wa.link/SUBSTITUIR" target="_blank" style="background:#25D366;">
-      <svg width="26" height="26" viewBox="0 0 24 24" fill="white"><path d="M12 2C6.48 2 2 6.48 2 12c0 1.85.5 3.58 1.36 5.07L2 22l5.07-1.32A9.94 9.94 0 0012 22c5.52 0 10-4.48 10-10S17.52 2 12 2zm0 18c-1.6 0-3.1-.44-4.38-1.2l-.31-.19-3.01.79.8-2.93-.2-.3A7.97 7.97 0 014 12c0-4.41 3.59-8 8-8s8 3.59 8 8-3.59 8-8 8z"/></svg>
-    </a>
     <a href="https://www.instagram.com/hairstudiogleycifelix/" target="_blank" aria-label="Instagram" style="background:radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%,#d6249f 60%,#285AEB 90%);">
       <svg width="26" height="26" viewBox="0 0 448 512" fill="white"><path d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z"/></svg>
     </a>
-    <button class="chat-toggle" id="chatToggle" aria-label="Chat" style="background:var(--ink); border:2px solid var(--honey);">
-      <svg id="chatIconOpen" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#F5EDE0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>
-      <svg id="chatIconClose" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#F5EDE0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none;"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    <button class="chat-toggle" id="chatToggle" aria-label="Chat" style="background:var(--ink); border:2px solid var(--gold);">
+      <svg id="chatIconOpen" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#FBF4EA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>
+      <svg id="chatIconClose" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#FBF4EA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none;"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
     </button>
   </div>
 
@@ -184,7 +181,12 @@
       <div id="loginForm">
         <h2><%= T.login_title %></h2>
         <input type="email" id="loginEmail" placeholder="<%= T.email %>">
-        <input type="password" id="loginPassword" placeholder="<%= T.password %>">
+        <div class="password-field">
+          <input type="password" id="loginPassword" placeholder="<%= T.password %>">
+          <button type="button" class="password-toggle" onclick="togglePassword('loginPassword', this)" aria-label="<%= T.show_password %>">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          </button>
+        </div>
         <div class="form-error" id="loginError"></div>
         <button class="submit-btn" onclick="doLogin()"><%= T.login %></button>
         <div class="modal-switch" onclick="switchForm('register')"><%= T.no_account %></div>
@@ -194,11 +196,25 @@
         <input type="text" id="regName" placeholder="<%= T.name %>">
         <input type="email" id="regEmail" placeholder="<%= T.email %>">
         <input type="text" id="regPhone" placeholder="<%= T.phone %>">
-        <input type="password" id="regPassword" placeholder="<%= T.password %>">
+        <div class="password-field">
+          <input type="password" id="regPassword" placeholder="<%= T.password %>">
+          <button type="button" class="password-toggle" onclick="togglePassword('regPassword', this)" aria-label="<%= T.show_password %>">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          </button>
+        </div>
         <div class="form-error" id="regError"></div>
         <button class="submit-btn" onclick="doRegister()"><%= T.register_title %></button>
         <div class="modal-switch" onclick="switchForm('login')"><%= T.have_account %></div>
       </div>
+    </div>
+  </div>
+
+  <!-- Modal Minhas Marcações -->
+  <div class="modal-overlay" id="myBookingsModal">
+    <div class="modal-box" style="max-width:480px;">
+      <span class="modal-close" onclick="closeMyBookings()">&times;</span>
+      <h2><%= T.my_bookings_title %></h2>
+      <div class="mybookings-list" id="myBookingsList"></div>
     </div>
   </div>
 
@@ -207,6 +223,12 @@
     const IS_LOGGED_IN = <%= user ? 'true' : 'false' %>;
     const MSG_NO_SLOTS = "<%= T.no_slots %>";
     const MSG_SUCCESS = "<%= T.booking_success %>";
+    const STATUS_LABELS = {
+      pending: "<%= T.status_pending %>", confirmed: "<%= T.status_confirmed %>",
+      cancelled: "<%= T.status_cancelled %>", rejected: "<%= T.status_rejected %>"
+    };
+    const NO_BOOKINGS_YET = "<%= T.no_bookings_yet %>";
+    const CANCEL_LABEL = "<%= T.cancel_booking %>";
     const SERVICES_DATA = <%- JSON.stringify(services.map(s => ({
       name_pt: s.name_pt, name_en: s.name_en, price: s.price, duration: s.duration_minutes
     }))) %>;

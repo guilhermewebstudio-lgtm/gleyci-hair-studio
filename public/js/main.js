@@ -2,7 +2,7 @@
 document.addEventListener('DOMContentLoaded', () => {
   const intro = document.getElementById('introOverlay');
   if (intro) {
-    setTimeout(() => intro.classList.add('intro-done'), 2900);
+    setTimeout(() => intro.classList.add('intro-done'), 2400);
   }
 
   // Navbar: fundo sólido ao fazer scroll
@@ -13,14 +13,29 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Fade-in ao scroll
+  // Fade-in ao scroll (secções)
   const sections = document.querySelectorAll('.fade-section');
-  const observer = new IntersectionObserver((entries) => {
+  const sectionObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) entry.target.classList.add('visible');
     });
   }, { threshold: 0.15 });
-  sections.forEach(s => observer.observe(s));
+  sections.forEach(s => sectionObserver.observe(s));
+
+  // Fade-in em cascata (galeria e cards de serviço)
+  const staggerItems = document.querySelectorAll('.stagger-item');
+  const staggerObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const el = entry.target;
+        const siblings = Array.from(el.parentElement.children);
+        const idx = siblings.indexOf(el);
+        setTimeout(() => el.classList.add('visible'), idx * 70);
+        staggerObserver.unobserve(el);
+      }
+    });
+  }, { threshold: 0.1 });
+  staggerItems.forEach(el => staggerObserver.observe(el));
 
   // Data mínima = hoje
   const dateInput = document.getElementById('dateInput');
@@ -30,7 +45,7 @@ document.addEventListener('DOMContentLoaded', () => {
     dateInput.addEventListener('change', loadSlots);
   }
   const serviceSelect = document.getElementById('serviceSelect');
-  if (serviceSelect) serviceSelect.addEventListener('change', loadSlots);
+  if (serviceSelect) serviceSelect.addEventListener('change', () => { updateProgress(); loadSlots(); });
 });
 
 // ---- Modal login/registo ----
@@ -44,6 +59,13 @@ function closeModal() {
 function switchForm(form) {
   document.getElementById('loginForm').style.display = form === 'login' ? 'block' : 'none';
   document.getElementById('registerForm').style.display = form === 'register' ? 'block' : 'none';
+}
+
+function togglePassword(inputId, btn) {
+  const input = document.getElementById(inputId);
+  const isHidden = input.type === 'password';
+  input.type = isHidden ? 'text' : 'password';
+  btn.style.color = isHidden ? 'var(--wine)' : '';
 }
 
 async function doLogin() {
@@ -90,6 +112,18 @@ async function logout() {
 // ---- Sistema de marcações ----
 let selectedTime = null;
 
+function updateProgress() {
+  const serviceId = document.getElementById('serviceSelect')?.value;
+  const date = document.getElementById('dateInput')?.value;
+  const d1 = document.getElementById('progDot1');
+  const d2 = document.getElementById('progDot2');
+  const d3 = document.getElementById('progDot3');
+  if (!d1) return;
+  d1.classList.toggle('done', !!serviceId);
+  d2.classList.toggle('done', !!serviceId && !!date);
+  d3.classList.toggle('done', !!serviceId && !!date && !!selectedTime);
+}
+
 async function loadSlots() {
   const serviceId = document.getElementById('serviceSelect').value;
   const date = document.getElementById('dateInput').value;
@@ -98,6 +132,7 @@ async function loadSlots() {
   grid.innerHTML = '';
   selectedTime = null;
   confirmBtn.disabled = true;
+  updateProgress();
 
   if (!serviceId || !date) return;
 
@@ -105,7 +140,7 @@ async function loadSlots() {
     const res = await fetch(`/api/availability/${date}?service_id=${serviceId}`);
     const data = await res.json();
     if (!data.slots.length) {
-      grid.innerHTML = `<p style="grid-column:1/-1; color:#999;">${MSG_NO_SLOTS}</p>`;
+      grid.innerHTML = `<p style="grid-column:1/-1; color:rgba(251,244,234,0.5);">${MSG_NO_SLOTS}</p>`;
       return;
     }
     data.slots.forEach(slot => {
@@ -118,6 +153,7 @@ async function loadSlots() {
         btn.classList.add('selected');
         selectedTime = slot;
         confirmBtn.disabled = false;
+        updateProgress();
       };
       grid.appendChild(btn);
     });
@@ -142,6 +178,57 @@ async function confirmBooking() {
     if (!res.ok) { alert(data.error); return; }
     alert(MSG_SUCCESS);
     location.reload();
+  } catch (e) {
+    console.error(e);
+  }
+}
+
+// ---- Minhas marcações ----
+async function openMyBookings() {
+  const modal = document.getElementById('myBookingsModal');
+  const list = document.getElementById('myBookingsList');
+  modal.classList.add('active');
+  list.innerHTML = '<p style="color:var(--text-soft); font-size:0.9rem;">…</p>';
+  try {
+    const res = await fetch('/api/my-bookings');
+    const data = await res.json();
+    if (!data.bookings || !data.bookings.length) {
+      list.innerHTML = `<p style="color:var(--text-soft); font-size:0.9rem;">${NO_BOOKINGS_YET}</p>`;
+      return;
+    }
+    list.innerHTML = '';
+    data.bookings.forEach(b => {
+      const name = LANG === 'pt' ? b.name_pt : b.name_en;
+      const dateStr = new Date(b.booking_date).toLocaleDateString(LANG === 'pt' ? 'pt-PT' : 'en-GB');
+      const timeStr = b.start_time.slice(0, 5);
+      const div = document.createElement('div');
+      div.className = 'mybooking-item';
+      const canCancel = b.status === 'pending' || b.status === 'confirmed';
+      div.innerHTML = `
+        <div class="row1">
+          <span class="service-name">${name}</span>
+          <span class="status-badge ${b.status}">${STATUS_LABELS[b.status] || b.status}</span>
+        </div>
+        <div class="meta">${dateStr} · ${timeStr}</div>
+        ${canCancel ? `<span class="cancel-link" data-id="${b.id}">${CANCEL_LABEL}</span>` : ''}
+      `;
+      if (canCancel) {
+        div.querySelector('.cancel-link').onclick = () => cancelBooking(b.id);
+      }
+      list.appendChild(div);
+    });
+  } catch (e) {
+    console.error(e);
+    list.innerHTML = '<p style="color:var(--danger); font-size:0.9rem;">Erro ao carregar.</p>';
+  }
+}
+function closeMyBookings() {
+  document.getElementById('myBookingsModal').classList.remove('active');
+}
+async function cancelBooking(id) {
+  try {
+    await fetch(`/api/bookings/${id}/cancel`, { method: 'POST' });
+    openMyBookings();
   } catch (e) {
     console.error(e);
   }

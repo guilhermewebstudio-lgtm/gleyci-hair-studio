@@ -54,8 +54,14 @@ const translations = {
     no_account: "Não tens conta? Regista-te", have_account: "Já tens conta? Entra",
     select_placeholder: "-- selecionar --",
     no_slots: "Sem horários disponíveis neste dia.",
-    booking_success: "Marcação confirmada com sucesso!",
-    footer_rights: "Todos os direitos reservados."
+    booking_success: "Pedido de marcação enviado! Vais receber confirmação assim que a Gleyci aceitar.",
+    booking_note: "O teu pedido fica pendente até a Gleyci confirmar.",
+    footer_rights: "Todos os direitos reservados.",
+    my_bookings_title: "As minhas marcações",
+    status_pending: "Pendente", status_confirmed: "Confirmada", status_cancelled: "Cancelada", status_rejected: "Recusada",
+    no_bookings_yet: "Ainda não tens marcações.",
+    cancel_booking: "Cancelar",
+    show_password: "Mostrar palavra-passe"
   },
   en: {
     nav_home: "Home", nav_gallery: "Gallery", nav_services: "Services", nav_booking: "Booking",
@@ -80,8 +86,14 @@ const translations = {
     no_account: "No account? Sign up", have_account: "Already have an account? Login",
     select_placeholder: "-- select --",
     no_slots: "No available times on this day.",
-    booking_success: "Booking confirmed successfully!",
-    footer_rights: "All rights reserved."
+    booking_success: "Booking request sent! You'll be confirmed once Gleyci accepts it.",
+    booking_note: "Your request stays pending until Gleyci confirms it.",
+    footer_rights: "All rights reserved.",
+    my_bookings_title: "My bookings",
+    status_pending: "Pending", status_confirmed: "Confirmed", status_cancelled: "Cancelled", status_rejected: "Rejected",
+    no_bookings_yet: "You don't have any bookings yet.",
+    cancel_booking: "Cancel",
+    show_password: "Show password"
   }
 };
 
@@ -184,7 +196,7 @@ app.get('/api/availability/:date', async (req, res) => {
     }
 
     const { rows: booked } = await pool.query(
-      `SELECT start_time FROM bookings WHERE booking_date = $1 AND status = 'confirmed'`,
+      `SELECT start_time FROM bookings WHERE booking_date = $1 AND status IN ('confirmed','pending')`,
       [date]
     );
     const bookedTimes = new Set(booked.map(b => b.start_time.slice(0, 5)));
@@ -233,8 +245,8 @@ app.post('/api/bookings', requireLogin, async (req, res) => {
     const endTime = `${String(Math.floor(endMinutes / 60)).padStart(2, '0')}:${String(endMinutes % 60).padStart(2, '0')}`;
 
     const { rows } = await pool.query(
-      `INSERT INTO bookings (user_id, service_id, booking_date, start_time, end_time)
-       VALUES ($1,$2,$3,$4,$5) RETURNING *`,
+      `INSERT INTO bookings (user_id, service_id, booking_date, start_time, end_time, status)
+       VALUES ($1,$2,$3,$4,$5,'pending') RETURNING *`,
       [req.session.user.id, service_id, date, time, endTime]
     );
     res.json({ success: true, booking: rows[0] });
@@ -263,17 +275,35 @@ app.post('/api/bookings/:id/cancel', requireLogin, async (req, res) => {
   res.json({ success: true });
 });
 
-// ---- Admin ----
+// ---- Admin: gestão de marcações ----
 app.get('/gestao', requireAdmin, async (req, res) => {
   const { rows: bookings } = await pool.query(
     `SELECT b.*, s.name_pt, u.name AS client_name, u.phone, u.email FROM bookings b
      JOIN services s ON s.id = b.service_id
      JOIN users u ON u.id = b.user_id
-     WHERE b.status = 'confirmed'
-     ORDER BY b.booking_date ASC, b.start_time ASC`
+     WHERE b.status IN ('pending','confirmed')
+     ORDER BY (b.status = 'pending') DESC, b.booking_date ASC, b.start_time ASC`
   );
   const { rows: services } = await pool.query('SELECT * FROM services ORDER BY display_order');
   res.render('admin', { bookings, services });
+});
+
+app.post('/api/admin/bookings/:id/accept', requireAdmin, async (req, res) => {
+  const { rows } = await pool.query(
+    `UPDATE bookings SET status = 'confirmed' WHERE id = $1 RETURNING *`,
+    [req.params.id]
+  );
+  if (!rows.length) return res.status(404).json({ error: 'Marcação não encontrada.' });
+  res.json({ success: true, booking: rows[0] });
+});
+
+app.post('/api/admin/bookings/:id/reject', requireAdmin, async (req, res) => {
+  const { rows } = await pool.query(
+    `UPDATE bookings SET status = 'rejected' WHERE id = $1 RETURNING *`,
+    [req.params.id]
+  );
+  if (!rows.length) return res.status(404).json({ error: 'Marcação não encontrada.' });
+  res.json({ success: true, booking: rows[0] });
 });
 
 app.post('/api/admin/block-date', requireAdmin, async (req, res) => {
@@ -294,6 +324,21 @@ async function ensureDatabase() {
   }
 }
 
-ensureDatabase().finally(() => {
+// Torna admin a conta cujo email está em ADMIN_EMAIL (definido nas variáveis de ambiente do Render)
+async function promoteAdmin() {
+  const email = process.env.ADMIN_EMAIL;
+  if (!email) return;
+  try {
+    const { rows } = await pool.query(
+      `UPDATE users SET is_admin = TRUE WHERE email = $1 AND is_admin = FALSE RETURNING id, email`,
+      [email]
+    );
+    if (rows.length) console.log(`Conta promovida a admin: ${rows[0].email}`);
+  } catch (err) {
+    console.error('Erro ao promover admin:', err);
+  }
+}
+
+ensureDatabase().then(promoteAdmin).finally(() => {
   app.listen(PORT, () => console.log(`Gleyci Hair Studio a correr na porta ${PORT}`));
 });
