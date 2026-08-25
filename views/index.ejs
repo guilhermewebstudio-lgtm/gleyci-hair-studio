@@ -12,7 +12,15 @@
 
   <!-- ABERTURA / INTRO ANIMADA -->
   <div class="intro-overlay" id="introOverlay">
+    <div class="intro-logo">
+      <svg width="72" height="72" viewBox="0 0 72 72" fill="none">
+        <circle cx="36" cy="36" r="34.5" stroke="#C9A15C" stroke-width="1"/>
+        <circle cx="36" cy="36" r="29.5" stroke="#C9A15C" stroke-width="0.5" opacity="0.5"/>
+        <text x="36" y="46" text-anchor="middle" font-family="Fraunces, serif" font-style="italic" font-size="30" fill="#F6EEE1">GF</text>
+      </svg>
+    </div>
     <div class="intro-wordmark">Gleyci Felix</div>
+    <div class="intro-rule"></div>
     <div class="intro-sub">Hair Specialist · Lisboa</div>
     <div class="intro-swatches">
       <span></span><span></span><span></span><span></span><span></span><span></span>
@@ -20,7 +28,13 @@
   </div>
 
   <nav id="mainNav">
-    <div class="logo">Gleyci Felix</div>
+    <div class="brand">
+      <svg class="brand-mark" viewBox="0 0 72 72" fill="none">
+        <circle class="ring" cx="36" cy="36" r="34.5"/>
+        <text x="36" y="46" text-anchor="middle" font-size="30">GF</text>
+      </svg>
+      <span class="brand-word" style="color:var(--parchment); font-size:1.15rem;">Gleyci Felix</span>
+    </div>
     <ul>
       <li><a href="#home"><%= T.nav_home %></a></li>
       <li><a href="#gallery"><%= T.nav_gallery %></a></li>
@@ -153,7 +167,13 @@
   </div>
 
   <footer>
-    <div class="logo">Gleyci Felix</div>
+    <div class="brand" style="justify-content:center; margin-bottom:8px;">
+      <svg class="brand-mark" viewBox="0 0 72 72" fill="none">
+        <circle class="ring" cx="36" cy="36" r="34.5"/>
+        <text x="36" y="46" text-anchor="middle" font-size="30">GF</text>
+      </svg>
+      <span class="brand-word" style="color:var(--parchment); font-size:1.2rem;">Gleyci Felix</span>
+    </div>
     <p>Lisboa, Portugal · &copy; <%= new Date().getFullYear() %> Hair Specialist Gleyci Felix. <%= T.footer_rights %></p>
   </footer>
 

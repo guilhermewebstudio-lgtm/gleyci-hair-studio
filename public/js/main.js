@@ -2,7 +2,7 @@
 document.addEventListener('DOMContentLoaded', () => {
   const intro = document.getElementById('introOverlay');
   if (intro) {
-    setTimeout(() => intro.classList.add('intro-done'), 2400);
+    setTimeout(() => intro.classList.add('intro-done'), 2900);
   }
 
   // Navbar: fundo sólido ao fazer scroll
