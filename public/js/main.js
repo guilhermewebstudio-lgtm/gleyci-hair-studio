@@ -13,6 +13,25 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  // Menu hambúrguer (mobile)
+  const hamburger = document.getElementById('hamburgerBtn');
+  const navLinks = document.getElementById('navLinks');
+  const navScrim = document.getElementById('navScrim');
+  function closeMobileMenu() {
+    hamburger.classList.remove('open');
+    navLinks.classList.remove('open');
+    navScrim.classList.remove('open');
+  }
+  if (hamburger && navLinks && navScrim) {
+    hamburger.addEventListener('click', () => {
+      const isOpen = navLinks.classList.toggle('open');
+      hamburger.classList.toggle('open', isOpen);
+      navScrim.classList.toggle('open', isOpen);
+    });
+    navScrim.addEventListener('click', closeMobileMenu);
+    navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMobileMenu));
+  }
+
   // Fade-in ao scroll (secções)
   const sections = document.querySelectorAll('.fade-section');
   const sectionObserver = new IntersectionObserver((entries) => {

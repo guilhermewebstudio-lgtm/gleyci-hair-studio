@@ -127,6 +127,14 @@ nav ul li a::after {
 nav ul li a:hover { opacity: 1; }
 nav ul li a:hover::after { width: 100%; }
 nav .nav-actions { display: flex; gap: 14px; align-items: center; }
+
+.hamburger {
+  display: none; flex-direction: column; gap: 5px; background: none; border: none; cursor: pointer; padding: 6px; z-index: 1100;
+}
+.hamburger span { width: 24px; height: 2px; background: var(--parchment); border-radius: 2px; transition: transform 0.3s, opacity 0.3s; }
+.hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.hamburger.open span:nth-child(2) { opacity: 0; }
+.hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 nav .pill-btn,
 nav .pill-btn:visited,
 nav .pill-btn:link {
@@ -379,7 +387,84 @@ select option { background: var(--ink); color: var(--parchment); }
 footer { background: var(--ink); color: var(--parchment); padding: 60px 5% 40px; text-align: center; }
 footer p { opacity: 0.55; font-size: 0.8rem; margin-top: 10px; font-family: 'Space Mono', monospace; }
 
-@media (max-width: 900px) {
-  nav ul { display: none; }
-  .hero { background-attachment: scroll; }
+/* ================================================================
+   RESPONSIVE
+   ================================================================ */
+
+/* ---- Tablet (≤ 1024px): aperta espaçamentos, mantém layout ---- */
+@media (max-width: 1024px) {
+  section { padding: 90px 5%; }
+  .hero { padding: 130px 5% 90px; }
+  .services-grid { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
 }
+
+/* ---- Tablet pequeno / mobile grande (≤ 860px): menu hambúrguer ---- */
+@media (max-width: 860px) {
+  .hamburger { display: flex; }
+
+  nav ul {
+    position: fixed; top: 0; right: 0; height: 100vh; width: min(78vw, 320px);
+    background: var(--ink); flex-direction: column; gap: 0;
+    padding: 100px 32px 40px; margin: 0;
+    transform: translateX(100%); transition: transform 0.35s cubic-bezier(0.65,0,0.35,1);
+    box-shadow: -10px 0 40px rgba(0,0,0,0.3);
+  }
+  nav ul.open { transform: translateX(0); }
+  nav ul li { width: 100%; border-bottom: 1px solid rgba(247,242,233,0.1); }
+  nav ul li a { display: block; padding: 18px 0; font-size: 0.9rem; }
+  nav ul li a::after { display: none; }
+
+  .nav-scrim {
+    display: none; position: fixed; inset: 0; background: rgba(21,17,13,0.55); z-index: 999;
+  }
+  .nav-scrim.open { display: block; }
+
+  nav .nav-actions .pill-btn span { display: none; }
+}
+
+/* ---- Mobile (≤ 640px) ---- */
+@media (max-width: 640px) {
+  nav { padding: 16px 5%; }
+  nav.scrolled { padding: 12px 5%; }
+  .brand-word { font-size: 1rem; }
+  .brand-mark { width: 28px; height: 28px; }
+
+  section { padding: 70px 6%; }
+  .section-title { margin-bottom: 38px; }
+
+  .hero { min-height: 92vh; padding: 110px 6% 70px; }
+  .hero-content h1 { font-size: clamp(1.9rem, 8vw, 2.6rem); }
+  .hero-content p { font-size: 0.98rem; }
+  .hero-btn { padding: 14px 30px; width: 100%; max-width: 280px; }
+
+  .gallery-grid { grid-template-columns: repeat(2, 1fr); gap: 3px; }
+
+  .services-grid { grid-template-columns: 1fr; }
+  .service-card { padding: 26px 22px; }
+
+  .booking-box { padding: 28px 20px; border-radius: 14px; }
+  .booking-progress { margin-bottom: 26px; }
+  .slots-grid { grid-template-columns: repeat(auto-fill, minmax(66px, 1fr)); gap: 8px; }
+  .slot-btn { padding: 9px; font-size: 0.78rem; }
+
+  .modal-box { padding: 28px 22px; width: 90%; }
+
+  .floating-buttons { bottom: 16px; right: 16px; gap: 10px; }
+  .floating-buttons a, .chat-toggle { width: 48px; height: 48px; }
+
+  footer { padding: 44px 6% 30px; }
+}
+
+/* ---- Telemóveis muito pequenos (≤ 380px) ---- */
+@media (max-width: 380px) {
+  .gallery-grid { grid-template-columns: 1fr; }
+  .lang-toggle button { padding: 6px 10px; font-size: 0.68rem; }
+  nav .pill-btn { padding: 8px 16px; font-size: 0.72rem; }
+}
+
+/* ---- Ecrãs grandes / desktop wide: trava a largura do conteúdo ---- */
+@media (min-width: 1600px) {
+  .hero-content { max-width: 760px; }
+  .section-title { max-width: 720px; }
+}
+

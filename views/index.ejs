@@ -33,7 +33,7 @@
       </svg>
       <span class="brand-word" style="color:var(--parchment); font-size:1.15rem;">Gleyci Felix</span>
     </div>
-    <ul>
+    <ul id="navLinks">
       <li><a href="#home"><%= T.nav_home %></a></li>
       <li><a href="#gallery"><%= T.nav_gallery %></a></li>
       <li><a href="#services"><%= T.nav_services %></a></li>
@@ -53,8 +53,10 @@
       <% } else { %>
         <button class="pill-btn" onclick="openModal('login')"><%= T.login %></button>
       <% } %>
+      <button class="hamburger" id="hamburgerBtn" aria-label="Menu"><span></span><span></span><span></span></button>
     </div>
   </nav>
+  <div class="nav-scrim" id="navScrim"></div>
 
   <section class="hero" id="home">
     <svg class="hero-watermark" viewBox="0 0 400 400" aria-hidden="true">
