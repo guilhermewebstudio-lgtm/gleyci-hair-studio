@@ -30,9 +30,65 @@ app.use(session({
 }));
 
 // ---- Idioma (cookie-based, como nos outros projetos) ----
+const translations = {
+  pt: {
+    nav_home: "Início", nav_gallery: "Galeria", nav_services: "Serviços", nav_booking: "Marcações",
+    login: "Entrar", logout: "Sair", my_bookings: "As minhas marcações",
+    hero_tag: "Especialista em Loiros · Lisboa",
+    hero_title: "Beleza e cor com técnica Toni&Guy",
+    hero_sub: "Especialista em loiros e correções de cor. Transformo o teu cabelo com precisão e cuidado.",
+    hero_btn: "Marcar agora",
+    gallery_tag: "Trabalhos",
+    gallery_title: "O que fazemos",
+    services_tag: "Preços",
+    services_title: "Os nossos serviços",
+    booking_tag: "Marcações",
+    booking_title: "Reserva o teu horário",
+    step_service: "1. Escolhe o serviço",
+    step_date: "2. Escolhe o dia",
+    step_time: "3. Escolhe o horário",
+    confirm: "Confirmar marcação",
+    login_title: "Entrar",
+    register_title: "Criar Conta",
+    name: "Nome", email: "Email", phone: "Telemóvel", password: "Palavra-passe",
+    no_account: "Não tens conta? Regista-te", have_account: "Já tens conta? Entra",
+    select_placeholder: "-- selecionar --",
+    no_slots: "Sem horários disponíveis neste dia.",
+    booking_success: "Marcação confirmada com sucesso!",
+    footer_rights: "Todos os direitos reservados."
+  },
+  en: {
+    nav_home: "Home", nav_gallery: "Gallery", nav_services: "Services", nav_booking: "Booking",
+    login: "Login", logout: "Logout", my_bookings: "My bookings",
+    hero_tag: "Blonde Specialist · Lisbon",
+    hero_title: "Beauty and color with Toni&Guy technique",
+    hero_sub: "Specialist in blonde tones and color correction. Transforming your hair with precision and care.",
+    hero_btn: "Book now",
+    gallery_tag: "Portfolio",
+    gallery_title: "What we do",
+    services_tag: "Pricing",
+    services_title: "Our services",
+    booking_tag: "Booking",
+    booking_title: "Reserve your slot",
+    step_service: "1. Choose the service",
+    step_date: "2. Choose the day",
+    step_time: "3. Choose the time",
+    confirm: "Confirm booking",
+    login_title: "Login",
+    register_title: "Create Account",
+    name: "Name", email: "Email", phone: "Phone", password: "Password",
+    no_account: "No account? Sign up", have_account: "Already have an account? Login",
+    select_placeholder: "-- select --",
+    no_slots: "No available times on this day.",
+    booking_success: "Booking confirmed successfully!",
+    footer_rights: "All rights reserved."
+  }
+};
+
 app.use((req, res, next) => {
   const lang = req.cookies.lang === 'en' ? 'en' : 'pt';
   res.locals.lang = lang;
+  res.locals.T = translations[lang];
   res.locals.user = req.session.user || null;
   next();
 });
