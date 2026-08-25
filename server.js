@@ -227,4 +227,17 @@ app.post('/api/admin/block-date', requireAdmin, async (req, res) => {
 });
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`Gleyci Hair Studio a correr na porta ${PORT}`));
+
+// Corre a migração automaticamente no arranque (útil em planos free sem Shell)
+async function ensureDatabase() {
+  try {
+    const migrate = require('./db/migrate-inline');
+    await migrate(pool);
+  } catch (err) {
+    console.error('Erro ao preparar base de dados:', err);
+  }
+}
+
+ensureDatabase().finally(() => {
+  app.listen(PORT, () => console.log(`Gleyci Hair Studio a correr na porta ${PORT}`));
+});
