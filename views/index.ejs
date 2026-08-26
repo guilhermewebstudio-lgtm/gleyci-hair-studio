@@ -37,6 +37,7 @@
       <li><a href="#home"><%= T.nav_home %></a></li>
       <li><a href="#gallery"><%= T.nav_gallery %></a></li>
       <li><a href="#services"><%= T.nav_services %></a></li>
+      <li><a href="#location"><%= T.nav_location %></a></li>
       <li><a href="#booking"><%= T.nav_booking %></a></li>
     </ul>
     <div class="nav-actions">
@@ -59,11 +60,6 @@
   <div class="nav-scrim" id="navScrim"></div>
 
   <section class="hero" id="home">
-    <svg class="hero-watermark" viewBox="0 0 400 400" aria-hidden="true">
-      <circle cx="200" cy="200" r="190" stroke-width="1"/>
-      <circle cx="200" cy="200" r="160" stroke-width="0.5"/>
-      <text x="200" y="235" text-anchor="middle" font-size="160">GF</text>
-    </svg>
     <div class="hero-content">
       <span class="eyebrow"><%= T.hero_tag %></span>
       <h1><%= lang === 'pt' ? 'Beleza e cor com técnica ' : 'Beauty and color with the ' %><em>Toni&Guy</em><%= lang === 'pt' ? '' : ' technique' %></h1>
@@ -80,16 +76,16 @@
       <div class="section-line"></div>
     </div>
     <div class="gallery-grid" id="galleryGrid">
-      <div class="gallery-item stagger-item"><img src="https://images.unsplash.com/photo-1634449571010-02389ed0f9b0?fm=jpg&q=80&w=800&auto=format&fit=crop" alt="Trabalho de cabelo" loading="lazy"></div>
-      <div class="gallery-item stagger-item"><img src="https://images.unsplash.com/photo-1734111719430-fe4a3973f8af?fm=jpg&q=80&w=800&auto=format&fit=crop" alt="Trabalho de cabelo" loading="lazy"></div>
-      <div class="gallery-item stagger-item"><video src="https://assets.mixkit.co/videos/49556/49556-360.mp4" autoplay muted loop playsinline></video></div>
-      <div class="gallery-item stagger-item"><img src="https://images.unsplash.com/photo-1580618672591-eb180b1a973f?fm=jpg&q=80&w=800&auto=format&fit=crop" alt="Trabalho de cabelo" loading="lazy"></div>
-      <div class="gallery-item stagger-item"><video src="https://assets.mixkit.co/videos/33257/33257-360.mp4" autoplay muted loop playsinline></video></div>
-      <div class="gallery-item stagger-item"><img src="https://images.unsplash.com/photo-1700760934268-8aa0ef52ce0a?fm=jpg&q=80&w=800&auto=format&fit=crop" alt="Trabalho de cabelo" loading="lazy"></div>
+      <div class="gallery-item stagger-item"><img src="/images/gallery/hair-work-1.png" alt="Trabalho de cor - Gleyci Felix" loading="lazy"></div>
+      <div class="gallery-item stagger-item"><img src="/images/gallery/hair-work-2.png" alt="Trabalho de cor - Gleyci Felix" loading="lazy"></div>
+      <div class="gallery-item stagger-item"><img src="/images/gallery/interior-salon.png" alt="Interior do estúdio Gleyci Felix" loading="lazy"></div>
+      <div class="gallery-item stagger-item"><img src="/images/gallery/hair-work-3.png" alt="Trabalho de cor - Gleyci Felix" loading="lazy"></div>
+      <div class="gallery-item stagger-item"><img src="/images/gallery/hair-work-4.png" alt="Trabalho de cor - Gleyci Felix" loading="lazy"></div>
+      <div class="gallery-item stagger-item"><img src="/images/gallery/hair-work-5.png" alt="Trabalho de cor - Gleyci Felix" loading="lazy"></div>
     </div>
   </section>
 
-  <section id="services" class="fade-section" style="background:#FBF7EF;">
+  <section id="services" class="fade-section" style="background:var(--surface-2);">
     <div class="section-title">
       <span class="eyebrow"><%= T.services_tag %></span>
       <h2><%= T.services_title %></h2>
@@ -108,6 +104,34 @@
           </div>
         </div>
       <% }) %>
+    </div>
+  </section>
+
+  <section id="location" class="fade-section" style="background:var(--ink); color:var(--parchment);">
+    <div class="section-title">
+      <span class="eyebrow"><%= T.location_tag %></span>
+      <h2 style="color:var(--parchment);"><%= T.location_title %></h2>
+      <div class="section-line" style="background:rgba(247,242,233,0.15);"></div>
+    </div>
+    <div class="location-grid">
+      <div class="location-map">
+        <iframe
+          src="https://www.google.com/maps?q=Lisboa,Portugal&output=embed"
+          width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade" title="Localização Gleyci Felix Hair Studio">
+        </iframe>
+      </div>
+      <div class="location-info">
+        <h3><%= T.hours_title %></h3>
+        <ul class="hours-list">
+          <li><span><%= T.day_tue_sat %></span><span>09:00 – 19:00</span></li>
+          <li><span><%= T.day_sun_mon %></span><span class="closed"><%= T.closed %></span></li>
+        </ul>
+        <div class="location-divider"></div>
+        <h3><%= T.address_title %></h3>
+        <p class="location-address"><%= T.address_placeholder %></p>
+        <a href="https://www.google.com/maps?q=Lisboa,Portugal" target="_blank" class="location-link"><%= T.open_maps %> →</a>
+      </div>
     </div>
   </section>
 

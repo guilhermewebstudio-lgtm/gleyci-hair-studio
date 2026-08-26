@@ -2,11 +2,13 @@
   --ink: #15110D;
   --ink-2: #221B14;
   --parchment: #F7F2E9;
+  --surface: #EBE0C8;
+  --surface-2: #E2D5B8;
   --gold: #B8935A;
   --gold-light: #D8BD8C;
   --bronze: #8B5E34;
   --wine: #6B3226;
-  --line: #E6DFCF;
+  --line: #D9CBA8;
   --text: #221C15;
   --text-soft: #6B6155;
   --ok: #4C7A5E;
@@ -24,7 +26,7 @@ html { scroll-behavior: smooth; }
 
 body {
   font-family: 'Work Sans', sans-serif;
-  background: var(--parchment);
+  background: var(--surface);
   color: var(--text);
   overflow-x: hidden;
 }
@@ -159,10 +161,10 @@ nav .pill-btn:hover { background: var(--gold); color: var(--ink) !important; tra
 /* ================= HERO ================= */
 .hero {
   min-height: 100vh;
-  display: flex; align-items: center; justify-content: center; text-align: center;
+  display: flex; align-items: center; justify-content: flex-start; text-align: left;
   background:
-    radial-gradient(ellipse 1000px 700px at 50% 30%, rgba(184,147,90,0.10), transparent 65%),
-    linear-gradient(165deg, var(--ink) 0%, var(--ink-2) 100%);
+    linear-gradient(90deg, rgba(21,17,13,0.94) 30%, rgba(21,17,13,0.55) 65%, rgba(21,17,13,0.25) 100%),
+    url('/images/gallery/hero-branded.png') center 20%/cover;
   color: var(--parchment);
   position: relative;
   padding: 140px 5% 100px;
@@ -175,13 +177,13 @@ nav .pill-btn:hover { background: var(--gold); color: var(--ink) !important; tra
 }
 .hero-watermark text { font-family: 'Fraunces', serif; font-style: italic; fill: var(--gold); }
 .hero-watermark circle { fill: none; stroke: var(--gold); }
-.hero-content { opacity: 0; transform: translateY(30px); animation: heroIn 1s ease forwards; animation-delay: 2.1s; max-width: 680px; }
+.hero-content { opacity: 0; transform: translateY(30px); animation: heroIn 1s ease forwards; animation-delay: 2.1s; max-width: 620px; }
 .hero-content .eyebrow { color: var(--gold); }
 .hero-content h1 {
   font-size: clamp(2.5rem, 5.6vw, 4.4rem); margin: 26px 0 28px; line-height: 1.06; font-weight: 450;
 }
 .hero-content h1 em { color: var(--gold); font-style: italic; font-weight: 500; }
-.hero-content p { font-size: 1.05rem; opacity: 0.7; margin: 0 auto 42px; max-width: 460px; line-height: 1.75; font-weight: 300; }
+.hero-content p { font-size: 1.05rem; opacity: 0.75; margin: 0 0 42px; max-width: 460px; line-height: 1.75; font-weight: 300; }
 .hero-btn {
   background: transparent; color: var(--gold-light); border: 1px solid var(--gold); padding: 16px 42px;
   border-radius: 2px; font-weight: 500; cursor: pointer; font-size: 0.78rem;
@@ -237,7 +239,7 @@ section { padding: 140px 5%; }
 
 /* ================= SERVICES / PRICES ================= */
 .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1px; background: var(--line); border: 1px solid var(--line); }
-.service-card { background: var(--parchment); padding: 44px 36px; position: relative; transition: background 0.35s, transform 0.35s; }
+.service-card { background: var(--surface); padding: 44px 36px; position: relative; transition: background 0.35s, transform 0.35s; }
 .service-card:hover { background: white; transform: translateY(-2px); z-index: 2; box-shadow: 0 20px 50px rgba(21,17,13,0.08); }
 .service-card .tone-dot { width: 7px; height: 7px; border-radius: 50%; margin-bottom: 20px; box-shadow: 0 0 0 4px rgba(184,147,90,0.12); }
 .service-card h3 { font-size: 1.2rem; margin-bottom: 12px; font-weight: 450; }
@@ -245,6 +247,19 @@ section { padding: 140px 5%; }
 .service-card .price-row { display: flex; justify-content: space-between; align-items: baseline; padding-top: 18px; border-top: 1px solid var(--line); }
 .service-card .price { font-family: 'Fraunces', serif; font-size: 1.5rem; color: var(--wine); font-weight: 400; }
 .service-card .duration { font-size: 0.68rem; color: var(--text-soft); font-family: 'Space Mono', monospace; letter-spacing: 0.05em; }
+
+/* ================= LOCATION & HOURS ================= */
+.location-grid { display: grid; grid-template-columns: 1.3fr 1fr; gap: 40px; align-items: stretch; }
+.location-map { border-radius: 4px; overflow: hidden; min-height: 380px; border: 1px solid rgba(184,147,90,0.2); filter: grayscale(35%) contrast(1.05); }
+.location-info h3 { font-size: 1.1rem; color: var(--gold-light); margin-bottom: 20px; font-weight: 450; }
+.hours-list { list-style: none; display: flex; flex-direction: column; gap: 12px; margin-bottom: 30px; }
+.hours-list li { display: flex; justify-content: space-between; font-family: 'Space Mono', monospace; font-size: 0.85rem; padding-bottom: 12px; border-bottom: 1px solid rgba(247,242,233,0.1); }
+.hours-list li span:first-child { opacity: 0.7; }
+.hours-list li .closed { color: rgba(247,242,233,0.4); }
+.location-divider { height: 1px; background: rgba(184,147,90,0.2); margin: 30px 0; }
+.location-address { font-size: 0.95rem; opacity: 0.75; line-height: 1.7; margin-bottom: 20px; font-weight: 300; }
+.location-link { color: var(--gold); text-decoration: none; font-family: 'Space Mono', monospace; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.1em; transition: opacity 0.2s; }
+.location-link:hover { opacity: 0.7; }
 
 /* ================= BOOKING ================= */
 .booking-box { max-width: 800px; background: var(--ink); border-radius: 4px; padding: 56px; color: var(--parchment); box-shadow: 0 30px 70px rgba(21,17,13,0.2); border: 1px solid rgba(184,147,90,0.15); }
@@ -432,12 +447,17 @@ footer p { opacity: 0.55; font-size: 0.8rem; margin-top: 10px; font-family: 'Spa
   section { padding: 70px 6%; }
   .section-title { margin-bottom: 38px; }
 
-  .hero { min-height: 92vh; padding: 110px 6% 70px; }
+  .hero { min-height: 92vh; padding: 110px 6% 70px; justify-content: center; text-align: center; }
+  .hero-content { max-width: 100%; }
+  .hero-content p { margin: 0 auto 32px; }
   .hero-content h1 { font-size: clamp(1.9rem, 8vw, 2.6rem); }
   .hero-content p { font-size: 0.98rem; }
   .hero-btn { padding: 14px 30px; width: 100%; max-width: 280px; }
 
   .gallery-grid { grid-template-columns: repeat(2, 1fr); gap: 3px; }
+
+  .location-grid { grid-template-columns: 1fr; }
+  .location-map { min-height: 260px; }
 
   .services-grid { grid-template-columns: 1fr; }
   .service-card { padding: 26px 22px; }
