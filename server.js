@@ -32,7 +32,7 @@ app.use(session({
 // ---- Idioma (cookie-based, como nos outros projetos) ----
 const translations = {
   pt: {
-    nav_home: "Início", nav_gallery: "Galeria", nav_services: "Serviços", nav_location: "Localização", nav_booking: "Marcações",
+    nav_home: "Início", nav_gallery: "Galeria", nav_services: "Serviços", nav_location: "Localização", nav_hours: "Horários", nav_booking: "Marcações",
     login: "Entrar", logout: "Sair", my_bookings: "As minhas marcações",
     hero_tag: "Especialista em Loiros · Lisboa",
     hero_title: "Beleza e cor com técnica Toni&Guy",
@@ -62,13 +62,13 @@ const translations = {
     no_bookings_yet: "Ainda não tens marcações.",
     cancel_booking: "Cancelar",
     show_password: "Mostrar palavra-passe",
-    location_tag: "Onde estamos", location_title: "Localização & Horários",
-    hours_title: "Horário", day_tue_sat: "Terça — Sábado", day_sun_mon: "Domingo e Segunda", closed: "Encerrado",
+    location_tag: "Onde estamos", location_title: "Localização",
+    hours_tag: "Disponibilidade", hours_section_title: "Horários", today_label: "Hoje", closed_label: "Encerrado",
     address_title: "Morada", address_placeholder: "R. das Pedralvas 15, Lj 12, 1500-487 Lisboa",
     open_maps: "Abrir no Google Maps"
   },
   en: {
-    nav_home: "Home", nav_gallery: "Gallery", nav_services: "Services", nav_location: "Location", nav_booking: "Booking",
+    nav_home: "Home", nav_gallery: "Gallery", nav_services: "Services", nav_location: "Location", nav_hours: "Hours", nav_booking: "Booking",
     login: "Login", logout: "Logout", my_bookings: "My bookings",
     hero_tag: "Blonde Specialist · Lisbon",
     hero_title: "Beauty and color with Toni&Guy technique",
@@ -98,8 +98,8 @@ const translations = {
     no_bookings_yet: "You don't have any bookings yet.",
     cancel_booking: "Cancel",
     show_password: "Show password",
-    location_tag: "Where we are", location_title: "Location & Hours",
-    hours_title: "Hours", day_tue_sat: "Tuesday — Saturday", day_sun_mon: "Sunday & Monday", closed: "Closed",
+    location_tag: "Where we are", location_title: "Location",
+    hours_tag: "Availability", hours_section_title: "Hours", today_label: "Today", closed_label: "Closed",
     address_title: "Address", address_placeholder: "R. das Pedralvas 15, Lj 12, 1500-487 Lisboa",
     open_maps: "Open in Google Maps"
   }
@@ -133,10 +133,29 @@ function requireAdmin(req, res, next) {
 app.get('/api/health', (req, res) => res.json({ status: 'ok', time: new Date() }));
 
 // ---- Home ----
+// ---- Helper: monta os 7 dias da semana com horário (usado na home e no /gestao) ----
+async function buildWeekHours() {
+  const { rows: hoursRows } = await pool.query('SELECT * FROM availability_rules ORDER BY weekday');
+  const weekdayNames = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
+  const weekdayNamesEn = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+  return weekdayNames.map((name, i) => {
+    const rule = hoursRows.find(r => r.weekday === i);
+    return {
+      weekday: i,
+      name,
+      name_en: weekdayNamesEn[i],
+      active: rule ? rule.active : false,
+      start_time: rule ? rule.start_time.slice(0, 5) : '09:00',
+      end_time: rule ? rule.end_time.slice(0, 5) : '19:00'
+    };
+  });
+}
+
 app.get('/', async (req, res) => {
   try {
     const { rows: services } = await pool.query('SELECT * FROM services WHERE active = TRUE ORDER BY display_order');
-    res.render('index', { services });
+    const hours = await buildWeekHours();
+    res.render('index', { services, hours });
   } catch (err) {
     console.error(err);
     res.status(500).send('Erro ao carregar a página.');
@@ -302,20 +321,7 @@ app.get('/gestao', requireAdmin, async (req, res) => {
      ORDER BY (b.status = 'pending') DESC, b.booking_date ASC, b.start_time ASC`
   );
   const { rows: services } = await pool.query('SELECT * FROM services ORDER BY display_order');
-  const { rows: hoursRows } = await pool.query('SELECT * FROM availability_rules ORDER BY weekday');
-
-  // Monta os 7 dias da semana, preenchendo com "fechado" onde não há regra
-  const weekdayNames = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
-  const hours = weekdayNames.map((name, i) => {
-    const rule = hoursRows.find(r => r.weekday === i);
-    return {
-      weekday: i,
-      name,
-      active: rule ? rule.active : false,
-      start_time: rule ? rule.start_time.slice(0, 5) : '09:00',
-      end_time: rule ? rule.end_time.slice(0, 5) : '19:00'
-    };
-  });
+  const hours = await buildWeekHours();
 
   res.render('admin', { bookings, services, hours });
 });

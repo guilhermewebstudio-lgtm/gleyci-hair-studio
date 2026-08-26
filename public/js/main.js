@@ -65,6 +65,15 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   const serviceSelect = document.getElementById('serviceSelect');
   if (serviceSelect) serviceSelect.addEventListener('change', () => { updateProgress(); loadSlots(); });
+
+  // Destaca o dia de hoje na secção de Horários
+  const todayWeekday = new Date().getDay();
+  const todayRow = document.querySelector(`.hours-day-row[data-weekday="${todayWeekday}"]`);
+  if (todayRow) {
+    todayRow.classList.add('is-today');
+    const tag = todayRow.querySelector('.today-tag');
+    if (tag) tag.style.display = 'inline-block';
+  }
 });
 
 // ---- Modal login/registo ----

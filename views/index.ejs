@@ -38,6 +38,7 @@
       <li><a href="#gallery"><%= T.nav_gallery %></a></li>
       <li><a href="#services"><%= T.nav_services %></a></li>
       <li><a href="#location"><%= T.nav_location %></a></li>
+      <li><a href="#hours"><%= T.nav_hours %></a></li>
       <li><a href="#booking"><%= T.nav_booking %></a></li>
     </ul>
     <div class="nav-actions">
@@ -122,16 +123,28 @@
         </iframe>
       </div>
       <div class="location-info">
-        <h3><%= T.hours_title %></h3>
-        <ul class="hours-list">
-          <li><span><%= T.day_tue_sat %></span><span>09:00 – 19:00</span></li>
-          <li><span><%= T.day_sun_mon %></span><span class="closed"><%= T.closed %></span></li>
-        </ul>
-        <div class="location-divider"></div>
         <h3><%= T.address_title %></h3>
         <p class="location-address"><%= T.address_placeholder %></p>
         <a href="https://www.google.com/maps/place//data=!4m2!3m1!1s0xd1933392ee64dd3:0xbe77e6a59a2a475d" target="_blank" class="location-link"><%= T.open_maps %> →</a>
       </div>
+    </div>
+  </section>
+
+  <section id="hours" class="fade-section" style="background:var(--surface-2);">
+    <div class="section-title">
+      <span class="eyebrow"><%= T.hours_tag %></span>
+      <h2><%= T.hours_section_title %></h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="hours-table">
+      <% hours.forEach(h => { %>
+        <div class="hours-day-row" data-weekday="<%= h.weekday %>">
+          <span class="hours-day-name"><%= lang === 'pt' ? h.name : h.name_en %><span class="today-tag" style="display:none;"><%= T.today_label %></span></span>
+          <span class="hours-day-time <%= h.active ? '' : 'closed' %>">
+            <%= h.active ? h.start_time + ' – ' + h.end_time : T.closed_label %>
+          </span>
+        </div>
+      <% }) %>
     </div>
   </section>
 

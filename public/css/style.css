@@ -252,14 +252,28 @@ section { padding: 140px 5%; }
 .location-grid { display: grid; grid-template-columns: 1.3fr 1fr; gap: 40px; align-items: stretch; }
 .location-map { border-radius: 4px; overflow: hidden; min-height: 380px; border: 1px solid rgba(184,147,90,0.2); filter: grayscale(35%) contrast(1.05); }
 .location-info h3 { font-size: 1.1rem; color: var(--gold-light); margin-bottom: 20px; font-weight: 450; }
-.hours-list { list-style: none; display: flex; flex-direction: column; gap: 12px; margin-bottom: 30px; }
-.hours-list li { display: flex; justify-content: space-between; font-family: 'Space Mono', monospace; font-size: 0.85rem; padding-bottom: 12px; border-bottom: 1px solid rgba(247,242,233,0.1); }
-.hours-list li span:first-child { opacity: 0.7; }
-.hours-list li .closed { color: rgba(247,242,233,0.4); }
-.location-divider { height: 1px; background: rgba(184,147,90,0.2); margin: 30px 0; }
 .location-address { font-size: 0.95rem; opacity: 0.75; line-height: 1.7; margin-bottom: 20px; font-weight: 300; }
 .location-link { color: var(--gold); text-decoration: none; font-family: 'Space Mono', monospace; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.1em; transition: opacity 0.2s; }
 .location-link:hover { opacity: 0.7; }
+
+/* ================= HOURS (automático, dia de hoje destacado) ================= */
+.hours-table { max-width: 640px; display: flex; flex-direction: column; }
+.hours-day-row {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 18px 22px; border-bottom: 1px solid var(--line);
+  transition: background 0.25s;
+}
+.hours-day-row:last-child { border-bottom: none; }
+.hours-day-name { font-family: 'Fraunces', serif; font-size: 1.05rem; display: flex; align-items: center; gap: 12px; }
+.hours-day-time { font-family: 'Space Mono', monospace; font-size: 0.88rem; color: var(--text-soft); }
+.hours-day-time.closed { opacity: 0.5; }
+.hours-day-row.is-today { background: rgba(168,137,95,0.1); border-radius: 4px; padding-left: 22px; }
+.hours-day-row.is-today .hours-day-name { color: var(--wine); font-style: italic; }
+.hours-day-row.is-today .hours-day-time { color: var(--text); font-weight: 600; }
+.today-tag {
+  font-family: 'Space Mono', monospace; font-size: 0.62rem; text-transform: uppercase; letter-spacing: 0.08em;
+  background: var(--wine); color: var(--parchment); padding: 3px 9px; border-radius: 20px;
+}
 
 /* ================= BOOKING ================= */
 .booking-box { max-width: 800px; background: var(--ink); border-radius: 4px; padding: 56px; color: var(--parchment); box-shadow: 0 30px 70px rgba(21,17,13,0.2); border: 1px solid rgba(184,147,90,0.15); }
