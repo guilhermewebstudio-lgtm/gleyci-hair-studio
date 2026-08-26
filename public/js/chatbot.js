@@ -1,10 +1,8 @@
 (function () {
-  const GOOGLE_REVIEW_URL = "https://www.google.com/maps/place//data=!4m2!3m1!1s0xd1933392ee64dd3:0xbe77e6a59a2a475d";
-
   const KB = {
     pt: {
       greeting: "Olá! 👋 Sou o assistente virtual da Gleyci. Posso ajudar com preços, horários, marcações, localização e muito mais. Em que posso ajudar?",
-      quick: ["Preços", "Horários", "Marcar", "Localização", "Avaliar-nos ⭐"],
+      quick: ["Preços", "Horários", "Marcar", "Localização"],
       fallback: "Não tenho a certeza sobre isso — mas podes contactar a Gleyci diretamente pelo Instagram (botão aqui ao lado) que ela responde rapidinho! Também podes tentar reformular a pergunta.",
       rules: [
         { test: /\b(preç|valor|quanto custa|tabela|orçamento)\w*/i, reply: () => renderPrices('pt') },
@@ -18,7 +16,6 @@
         { test: /\b(correç|corrigir|cor errada|cor mal|reverter)\w*/i, reply: () => "Fazemos correção de cor profissional para reverter tingimentos mal feitos. É um serviço mais demorado — recomendo marcares com antecedência e explicares o histórico do teu cabelo." },
         { test: /\b(insta|instagram)\w*/i, reply: () => "Podes seguir o trabalho da Gleyci em @hairstudiogleycifelix — botão do Instagram aqui ao lado 📸" },
         { test: /\b(whatsapp|telefone|contact|falar com|numero)\w*/i, reply: () => "Podes contactar a Gleyci diretamente pelo Instagram — botão aqui ao lado." },
-        { test: /\b(avali|estrelas|review|classifica|coment[áa]rio)\w*/i, reply: () => { openReview(); return "Obrigada! Vou abrir a página do Google para deixares a tua avaliação ⭐"; } },
         { test: /\b(pagament|pagar|dinheiro|multibanco|mbway|cartão|cartao)\w*/i, reply: () => "Podes pagar diretamente no estúdio — o método exato (dinheiro, cartão ou MB Way) confirma-se com a Gleyci no dia." },
         { test: /\b(sinal|dep[oó]sito|adiantament)\w*/i, reply: () => "Por agora não é pedido sinal para marcar — só confirma a tua presença. Se precisares de cancelar, avisa com antecedência." },
         { test: /\b(atras|chegar tarde)\w*/i, reply: () => "Se souberes que vais chegar atrasada(o), o melhor é avisar a Gleyci pelo Instagram para ela poder ajustar a agenda." },
@@ -41,7 +38,7 @@
     },
     en: {
       greeting: "Hi! 👋 I'm Gleyci's virtual assistant. I can help with prices, hours, bookings, location and more. How can I help?",
-      quick: ["Prices", "Hours", "Book", "Location", "Rate us ⭐"],
+      quick: ["Prices", "Hours", "Book", "Location"],
       fallback: "I'm not sure about that — but you can message Gleyci directly on Instagram (button here) and she'll get back to you quickly! You could also try rephrasing your question.",
       rules: [
         { test: /\b(price|cost|how much|rates|budget)\w*/i, reply: () => renderPrices('en') },
@@ -55,7 +52,6 @@
         { test: /\b(correct|fix|bad color|wrong color|reverse)\w*/i, reply: () => "We offer professional color correction to fix previous coloring mistakes. It's a longer session — booking ahead is recommended, and it helps to share your hair's coloring history." },
         { test: /\b(insta|instagram)\w*/i, reply: () => "Follow Gleyci's work at @hairstudiogleycifelix — Instagram button right here 📸" },
         { test: /\b(whatsapp|phone|contact|talk to|number)\w*/i, reply: () => "You can reach Gleyci directly via Instagram — button right here." },
-        { test: /\b(rate|review|star|rating|feedback)\w*/i, reply: () => { openReview(); return "Thank you! Opening the Google page for you to leave your review ⭐"; } },
         { test: /\b(pay|payment|cash|card)\w*/i, reply: () => "You can pay directly at the studio — the exact method (cash, card, or MB Way) is confirmed with Gleyci on the day." },
         { test: /\b(deposit|advance payment)\w*/i, reply: () => "No deposit is currently required to book — just show up for your appointment. If you need to cancel, please give advance notice." },
         { test: /\b(late|running late)\w*/i, reply: () => "If you know you'll be running late, the best thing is to message Gleyci on Instagram so she can adjust the schedule." },
@@ -77,10 +73,6 @@
       ]
     }
   };
-
-  function openReview() {
-    window.open(GOOGLE_REVIEW_URL, '_blank');
-  }
 
   function renderPrices(lang) {
     if (!window.SERVICES_DATA || !window.SERVICES_DATA.length) {
@@ -143,15 +135,7 @@
       const btn = document.createElement('button');
       btn.type = 'button';
       btn.innerText = label;
-      btn.onclick = () => {
-        if (/avali|rate/i.test(label)) {
-          addBubble(label, 'user');
-          openReview();
-          setTimeout(() => addBubble(lang === 'pt' ? "Obrigada! Vou abrir a página do Google para deixares a tua avaliação ⭐" : "Thank you! Opening the Google page for you to leave your review ⭐", 'bot'), 300);
-          return;
-        }
-        handleUserMessage(label);
-      };
+      btn.onclick = () => handleUserMessage(label);
       quickEl.appendChild(btn);
     });
   }

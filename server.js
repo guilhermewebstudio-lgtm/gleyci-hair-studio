@@ -32,7 +32,7 @@ app.use(session({
 // ---- Idioma (cookie-based, como nos outros projetos) ----
 const translations = {
   pt: {
-    nav_home: "Início", nav_gallery: "Galeria", nav_services: "Serviços", nav_location: "Localização", nav_hours: "Horários", nav_booking: "Marcações",
+    nav_home: "Início", nav_gallery: "Galeria", nav_services: "Serviços", nav_location: "Localização", nav_hours: "Horários", nav_booking: "Marcações", rate_us: "Avaliar-nos ⭐",
     login: "Entrar", logout: "Sair", my_bookings: "As minhas marcações",
     hero_tag: "Especialista em Loiros · Lisboa",
     hero_title: "Beleza e cor com técnica Toni&Guy",
@@ -68,7 +68,7 @@ const translations = {
     open_maps: "Abrir no Google Maps"
   },
   en: {
-    nav_home: "Home", nav_gallery: "Gallery", nav_services: "Services", nav_location: "Location", nav_hours: "Hours", nav_booking: "Booking",
+    nav_home: "Home", nav_gallery: "Gallery", nav_services: "Services", nav_location: "Location", nav_hours: "Hours", nav_booking: "Booking", rate_us: "Rate us ⭐",
     login: "Login", logout: "Logout", my_bookings: "My bookings",
     hero_tag: "Blonde Specialist · Lisbon",
     hero_title: "Beauty and color with Toni&Guy technique",

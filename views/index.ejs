@@ -39,20 +39,40 @@
       <li><a href="#location"><%= T.nav_location %></a></li>
       <li><a href="#hours"><%= T.nav_hours %></a></li>
       <li><a href="#booking"><%= T.nav_booking %></a></li>
+      <li class="nav-mobile-extra">
+        <a href="https://www.google.com/maps/place/Hair+Studio+Gleyci+Felix/@38.7540797,-9.2056008,17z/data=!3m1!5s0xd1ecd26bac31815:0xc9383e256167793b!4m8!3m7!1s0xd1933392ee64dd3:0xbe77e6a59a2a475d!8m2!3d38.7540797!4d-9.2056008!9m1!1b1!16s%2Fg%2F11lkjp8kcp?entry=ttu"
+           target="_blank" rel="noopener"><%= T.rate_us %></a>
+      </li>
+      <li class="nav-mobile-extra nav-mobile-lang">
+        <a href="/set-lang/pt" class="<%= lang === 'pt' ? 'active' : '' %>">PT</a>
+        <span>/</span>
+        <a href="/set-lang/en" class="<%= lang === 'en' ? 'active' : '' %>">EN</a>
+      </li>
+      <% if (user) { %>
+        <% if (user.is_admin) { %>
+          <li class="nav-mobile-extra"><a href="/gestao"><%= lang === 'pt' ? 'Gestão' : 'Admin' %></a></li>
+        <% } %>
+        <li class="nav-mobile-extra"><a href="#" onclick="openMyBookings(); return false;"><%= user.name.split(' ')[0] %></a></li>
+        <li class="nav-mobile-extra"><a href="#" onclick="logout(); return false;"><%= T.logout %></a></li>
+      <% } else { %>
+        <li class="nav-mobile-extra"><a href="#" onclick="openModal('login'); return false;"><%= T.login %></a></li>
+      <% } %>
     </ul>
     <div class="nav-actions">
-      <div class="lang-toggle">
+      <a href="https://www.google.com/maps/place/Hair+Studio+Gleyci+Felix/@38.7540797,-9.2056008,17z/data=!3m1!5s0xd1ecd26bac31815:0xc9383e256167793b!4m8!3m7!1s0xd1933392ee64dd3:0xbe77e6a59a2a475d!8m2!3d38.7540797!4d-9.2056008!9m1!1b1!16s%2Fg%2F11lkjp8kcp?entry=ttu"
+         target="_blank" rel="noopener" class="pill-btn rate-btn desktop-only"><%= T.rate_us %></a>
+      <div class="lang-toggle desktop-only">
         <button class="<%= lang === 'pt' ? 'active' : '' %>" onclick="location.href='/set-lang/pt'">PT</button>
         <button class="<%= lang === 'en' ? 'active' : '' %>" onclick="location.href='/set-lang/en'">EN</button>
       </div>
       <% if (user) { %>
         <% if (user.is_admin) { %>
-          <a href="/gestao" class="pill-btn" style="text-decoration:none; display:inline-block;"><%= lang === 'pt' ? 'Gestão' : 'Admin' %></a>
+          <a href="/gestao" class="pill-btn desktop-only" style="text-decoration:none; display:inline-block;"><%= lang === 'pt' ? 'Gestão' : 'Admin' %></a>
         <% } %>
-        <span style="color:#FBF4EA; font-size:0.85rem; font-family:'Space Mono',monospace; cursor:pointer;" onclick="openMyBookings()"><%= user.name.split(' ')[0] %></span>
-        <button class="pill-btn" onclick="logout()"><%= T.logout %></button>
+        <span class="desktop-only" style="color:#FBF4EA; font-size:0.85rem; font-family:'Space Mono',monospace; cursor:pointer;" onclick="openMyBookings()"><%= user.name.split(' ')[0] %></span>
+        <button class="pill-btn desktop-only" onclick="logout()"><%= T.logout %></button>
       <% } else { %>
-        <button class="pill-btn" onclick="openModal('login')"><%= T.login %></button>
+        <button class="pill-btn desktop-only" onclick="openModal('login')"><%= T.login %></button>
       <% } %>
       <button class="hamburger" id="hamburgerBtn" aria-label="Menu"><span></span><span></span><span></span></button>
     </div>
@@ -124,7 +144,7 @@
       <div class="location-info">
         <h3><%= T.address_title %></h3>
         <p class="location-address"><%= T.address_placeholder %></p>
-        <a href="https://www.google.com/maps/place//data=!4m2!3m1!1s0xd1933392ee64dd3:0xbe77e6a59a2a475d" target="_blank" class="location-link"><%= T.open_maps %> →</a>
+        <a href="https://www.google.com/maps/place/Hair+Studio+Gleyci+Felix/@38.7540797,-9.2056008,17z/data=!3m1!5s0xd1ecd26bac31815:0xc9383e256167793b!4m8!3m7!1s0xd1933392ee64dd3:0xbe77e6a59a2a475d!8m2!3d38.7540797!4d-9.2056008!9m1!1b1!16s%2Fg%2F11lkjp8kcp?entry=ttu" target="_blank" rel="noopener" class="location-link"><%= T.open_maps %> →</a>
       </div>
     </div>
   </section>
