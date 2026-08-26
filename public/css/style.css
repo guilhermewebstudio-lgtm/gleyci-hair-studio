@@ -2,13 +2,13 @@
   --ink: #15110D;
   --ink-2: #221B14;
   --parchment: #F7F2E9;
-  --surface: #EBE0C8;
-  --surface-2: #E2D5B8;
-  --gold: #B8935A;
-  --gold-light: #D8BD8C;
+  --surface: #E9E3D6;
+  --surface-2: #DFD8C7;
+  --gold: #A8895F;
+  --gold-light: #C9B085;
   --bronze: #8B5E34;
   --wine: #6B3226;
-  --line: #D9CBA8;
+  --line: #D6CEBB;
   --text: #221C15;
   --text-soft: #6B6155;
   --ok: #4C7A5E;
@@ -164,7 +164,7 @@ nav .pill-btn:hover { background: var(--gold); color: var(--ink) !important; tra
   display: flex; align-items: center; justify-content: flex-start; text-align: left;
   background:
     linear-gradient(90deg, rgba(21,17,13,0.94) 30%, rgba(21,17,13,0.55) 65%, rgba(21,17,13,0.25) 100%),
-    url('/images/gallery/hero-branded.png') center 20%/cover;
+    url('/images/gallery/interior-salon.png') center 40%/cover;
   color: var(--parchment);
   position: relative;
   padding: 140px 5% 100px;
