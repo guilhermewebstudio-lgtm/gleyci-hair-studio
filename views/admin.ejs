@@ -8,12 +8,12 @@
   <style>
     :root {
       --ink: #15110D; --ink-2: #221B14; --parchment: #F7F2E9;
-      --gold: #B8935A; --gold-light: #D8BD8C; --wine: #6B3226;
-      --line: #E6DFCF; --text: #221C15; --text-soft: #6B6155;
+      --gold: #A8895F; --gold-light: #C9B085; --wine: #6B3226;
+      --line: #D6CEBB; --text: #221C15; --text-soft: #6B6155;
       --ok: #4C7A5E; --pending: #B98A2E; --danger: #A5432E;
     }
     * { margin:0; padding:0; box-sizing:border-box; }
-    body { font-family:'Work Sans', sans-serif; background:var(--parchment); color:var(--text); }
+    body { font-family:'Work Sans', sans-serif; background:#E9E3D6; color:var(--text); }
 
     header {
       background: linear-gradient(165deg, var(--ink) 0%, var(--ink-2) 100%);
@@ -27,38 +27,77 @@
     .header-right { display:flex; align-items:center; gap:14px; }
     .header-sub { font-family:'Space Mono',monospace; font-size:0.72rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--gold); opacity:0.9; }
     .back-link {
-      color: var(--parchment); text-decoration:none; border:1px solid var(--gold); border-radius:30px;
-      padding:9px 20px; font-family:'Space Mono',monospace; font-size:0.78rem; letter-spacing:0.05em;
+      color: var(--parchment); text-decoration:none; border:1px solid var(--gold); border-radius:2px;
+      padding:9px 20px; font-family:'Space Mono',monospace; font-size:0.76rem; letter-spacing:0.05em;
       transition: background 0.2s, color 0.2s;
     }
     .back-link:hover { background:var(--gold); color:var(--ink); }
 
-    main { padding: 44px 5% 80px; }
-    h1 { font-family:'Fraunces', serif; font-style:italic; color:var(--ink); margin-bottom:6px; font-size:1.8rem; }
-    .sub { color:var(--text-soft); font-family:'Space Mono', monospace; font-size:0.78rem; margin-bottom:30px; text-transform:uppercase; letter-spacing:0.05em; }
+    main { padding: 44px 5% 80px; max-width: 1100px; margin: 0 auto; }
 
-    .table-wrap { background:white; border-radius:12px; overflow:hidden; box-shadow:0 10px 40px rgba(21,17,13,0.08); }
+    .tabs { display:flex; gap:6px; margin-bottom:34px; border-bottom:1px solid var(--line); }
+    .tab-btn {
+      background:none; border:none; padding:12px 22px; cursor:pointer;
+      font-family:'Space Mono',monospace; font-size:0.8rem; text-transform:uppercase; letter-spacing:0.06em;
+      color:var(--text-soft); border-bottom:2px solid transparent; transition:color 0.2s, border-color 0.2s;
+    }
+    .tab-btn.active { color:var(--wine); border-bottom-color:var(--wine); }
+    .tab-panel { display:none; }
+    .tab-panel.active { display:block; animation: fadeIn 0.3s ease; }
+    @keyframes fadeIn { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:translateY(0); } }
+
+    h1 { font-family:'Fraunces', serif; font-style:italic; color:var(--ink); margin-bottom:6px; font-size:1.6rem; }
+    .sub { color:var(--text-soft); font-family:'Space Mono', monospace; font-size:0.76rem; margin-bottom:26px; text-transform:uppercase; letter-spacing:0.05em; }
+
+    .table-wrap { background:white; border-radius:8px; overflow:hidden; box-shadow:0 10px 40px rgba(21,17,13,0.08); }
     table { width:100%; border-collapse:collapse; }
     th, td { padding:16px 18px; text-align:left; border-bottom:1px solid var(--line); font-size:0.9rem; vertical-align:middle; }
     th { background:var(--ink); color:var(--parchment); font-family:'Space Mono',monospace; font-size:0.7rem; text-transform:uppercase; letter-spacing:0.06em; font-weight:400; }
-    tbody tr { transition: background 0.15s; }
-    tbody tr:hover { background:#FBF7EE; }
+    tbody tr:hover { background:#FBF8F0; }
     tbody tr:last-child td { border-bottom:none; }
 
-    .badge { background:var(--gold); color:var(--ink); padding:5px 12px; border-radius:20px; font-size:0.74rem; font-weight:600; font-family:'Space Mono',monospace; }
-    .status-badge { display:inline-flex; align-items:center; gap:6px; font-family:'Space Mono',monospace; font-size:0.68rem; text-transform:uppercase; letter-spacing:0.05em; padding:5px 12px; border-radius:20px; }
+    .badge { background:var(--gold); color:var(--ink); padding:5px 12px; border-radius:2px; font-size:0.74rem; font-weight:600; font-family:'Space Mono',monospace; }
+    .status-badge { display:inline-flex; align-items:center; gap:6px; font-family:'Space Mono',monospace; font-size:0.68rem; text-transform:uppercase; letter-spacing:0.05em; padding:5px 12px; border-radius:2px; }
     .status-badge.pending { background:rgba(185,138,46,0.14); color:var(--pending); }
     .status-badge.confirmed { background:rgba(76,122,94,0.14); color:var(--ok); }
 
     .actions { display:flex; gap:8px; }
-    .actions button { border:none; padding:8px 16px; border-radius:20px; font-size:0.76rem; font-weight:600; cursor:pointer; font-family:'Space Mono',monospace; transition:opacity 0.2s, transform 0.2s; }
+    .actions button { border:none; padding:8px 16px; border-radius:2px; font-size:0.76rem; font-weight:600; cursor:pointer; font-family:'Space Mono',monospace; transition:opacity 0.2s, transform 0.2s; }
     .actions button:hover { opacity:0.88; transform:translateY(-1px); }
     .btn-accept { background:var(--ok); color:white; }
     .btn-reject { background:var(--danger); color:white; }
 
     .empty-state { text-align:center; padding:80px 20px; color:var(--text-soft); }
-    .empty-state .icon { font-family:'Fraunces',serif; font-style:italic; font-size:2.4rem; color:var(--gold); margin-bottom:14px; }
+    .empty-state .icon { font-family:'Fraunces',serif; font-style:italic; font-size:1.6rem; color:var(--gold); margin-bottom:14px; }
     .empty-state p { font-size:0.95rem; }
+
+    /* Preços */
+    .svc-input { width:90px; padding:8px 10px; border:1px solid var(--line); border-radius:4px; font-family:'Work Sans',sans-serif; font-size:0.9rem; }
+    .svc-input:focus { outline:none; border-color:var(--gold); }
+    .save-btn {
+      background:var(--wine); color:white; border:none; padding:8px 18px; border-radius:2px; cursor:pointer;
+      font-family:'Space Mono',monospace; font-size:0.72rem; text-transform:uppercase; letter-spacing:0.05em;
+      transition:opacity 0.2s;
+    }
+    .save-btn:hover { opacity:0.85; }
+    .save-btn.saved { background:var(--ok); }
+    .toggle-active { display:flex; align-items:center; gap:6px; font-size:0.8rem; cursor:pointer; }
+
+    /* Horários */
+    .hours-grid { display:flex; flex-direction:column; gap:1px; background:var(--line); border-radius:8px; overflow:hidden; box-shadow:0 10px 40px rgba(21,17,13,0.08); }
+    .hours-row { background:white; padding:16px 20px; display:flex; align-items:center; gap:18px; flex-wrap:wrap; }
+    .hours-row .day-name { width:100px; font-family:'Space Mono',monospace; font-size:0.85rem; font-weight:700; }
+    .hours-row input[type="time"] { padding:8px 10px; border:1px solid var(--line); border-radius:4px; font-family:'Work Sans',sans-serif; }
+    .hours-row input[type="time"]:disabled { opacity:0.35; }
+    .day-toggle { display:flex; align-items:center; gap:8px; font-size:0.82rem; }
+    .save-hours-btn {
+      margin-top:22px; background:var(--wine); color:white; border:none; padding:13px 30px; border-radius:2px; cursor:pointer;
+      font-family:'Space Mono',monospace; font-size:0.78rem; text-transform:uppercase; letter-spacing:0.08em;
+      transition:opacity 0.2s;
+    }
+    .save-hours-btn:hover { opacity:0.85; }
+    .save-msg { display:inline-block; margin-left:14px; font-size:0.82rem; color:var(--ok); opacity:0; transition:opacity 0.3s; }
+    .save-msg.show { opacity:1; }
 
     @media (max-width: 800px) {
       .table-wrap { overflow-x:auto; }
@@ -67,10 +106,11 @@
     @media (max-width: 600px) {
       header { padding: 20px 6%; }
       main { padding: 30px 6% 60px; }
-      h1 { font-size: 1.5rem; }
-      .header-right { gap: 10px; }
+      h1 { font-size: 1.4rem; }
       .header-sub { display: none; }
       .back-link { padding: 8px 16px; font-size: 0.72rem; }
+      .tabs { overflow-x:auto; }
+      .hours-row { flex-direction:column; align-items:flex-start; gap:10px; }
     }
   </style>
 </head>
@@ -90,54 +130,124 @@
   </header>
 
   <main>
-    <h1>Marcações</h1>
-    <div class="sub">Pendentes e confirmadas</div>
+    <div class="tabs">
+      <button class="tab-btn active" data-tab="bookings">Marcações</button>
+      <button class="tab-btn" data-tab="prices">Preços</button>
+      <button class="tab-btn" data-tab="hours">Horários</button>
+    </div>
 
-    <% if (bookings.length === 0) { %>
-      <div class="table-wrap">
-        <div class="empty-state">
-          <div class="icon">Sem marcações</div>
-          <p>Assim que alguém pedir uma marcação, aparece aqui para aceitares ou recusares.</p>
+    <!-- MARCAÇÕES -->
+    <div class="tab-panel active" id="tab-bookings">
+      <h1>Marcações</h1>
+      <div class="sub">Pendentes e confirmadas</div>
+
+      <% if (bookings.length === 0) { %>
+        <div class="table-wrap">
+          <div class="empty-state">
+            <div class="icon">Sem marcações</div>
+            <p>Assim que alguém pedir uma marcação, aparece aqui para aceitares ou recusares.</p>
+          </div>
         </div>
-      </div>
-    <% } else { %>
+      <% } else { %>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Estado</th><th>Data</th><th>Hora</th><th>Cliente</th><th>Telefone</th><th>Email</th><th>Serviço</th><th>Ação</th>
+              </tr>
+            </thead>
+            <tbody id="bookingsBody">
+              <% bookings.forEach(b => { %>
+                <tr data-id="<%= b.id %>">
+                  <td><span class="status-badge <%= b.status %>"><%= b.status === 'pending' ? 'Pendente' : 'Confirmada' %></span></td>
+                  <td><%= new Date(b.booking_date).toLocaleDateString('pt-PT') %></td>
+                  <td><%= b.start_time.slice(0,5) %></td>
+                  <td><%= b.client_name %></td>
+                  <td><%= b.phone || '-' %></td>
+                  <td><%= b.email %></td>
+                  <td><span class="badge"><%= b.name_pt %></span></td>
+                  <td>
+                    <% if (b.status === 'pending') { %>
+                      <div class="actions">
+                        <button class="btn-accept" onclick="actOnBooking(<%= b.id %>, 'accept', this)">Aceitar</button>
+                        <button class="btn-reject" onclick="actOnBooking(<%= b.id %>, 'reject', this)">Recusar</button>
+                      </div>
+                    <% } else { %>
+                      —
+                    <% } %>
+                  </td>
+                </tr>
+              <% }) %>
+            </tbody>
+          </table>
+        </div>
+      <% } %>
+    </div>
+
+    <!-- PREÇOS -->
+    <div class="tab-panel" id="tab-prices">
+      <h1>Preços & Serviços</h1>
+      <div class="sub">Edita o preço, duração e disponibilidade de cada serviço</div>
       <div class="table-wrap">
         <table>
           <thead>
-            <tr>
-              <th>Estado</th><th>Data</th><th>Hora</th><th>Cliente</th><th>Telefone</th><th>Email</th><th>Serviço</th><th>Ação</th>
-            </tr>
+            <tr><th>Serviço</th><th>Preço (€)</th><th>Duração (min)</th><th>Ativo</th><th>Ação</th></tr>
           </thead>
-          <tbody id="bookingsBody">
-            <% bookings.forEach(b => { %>
-              <tr data-id="<%= b.id %>">
-                <td><span class="status-badge <%= b.status %>"><%= b.status === 'pending' ? 'Pendente' : 'Confirmada' %></span></td>
-                <td><%= new Date(b.booking_date).toLocaleDateString('pt-PT') %></td>
-                <td><%= b.start_time.slice(0,5) %></td>
-                <td><%= b.client_name %></td>
-                <td><%= b.phone || '-' %></td>
-                <td><%= b.email %></td>
-                <td><span class="badge"><%= b.name_pt %></span></td>
+          <tbody>
+            <% services.forEach(s => { %>
+              <tr data-svc-id="<%= s.id %>">
+                <td><%= s.name_pt %></td>
+                <td><input class="svc-input" type="number" min="0" step="1" value="<%= parseFloat(s.price).toFixed(0) %>" data-field="price"></td>
+                <td><input class="svc-input" type="number" min="5" step="5" value="<%= s.duration_minutes %>" data-field="duration_minutes"></td>
                 <td>
-                  <% if (b.status === 'pending') { %>
-                    <div class="actions">
-                      <button class="btn-accept" onclick="actOn(<%= b.id %>, 'accept', this)">Aceitar</button>
-                      <button class="btn-reject" onclick="actOn(<%= b.id %>, 'reject', this)">Recusar</button>
-                    </div>
-                  <% } else { %>
-                    —
-                  <% } %>
+                  <label class="toggle-active">
+                    <input type="checkbox" data-field="active" <%= s.active ? 'checked' : '' %>> Ativo
+                  </label>
                 </td>
+                <td><button class="save-btn" onclick="saveService(<%= s.id %>, this)">Guardar</button></td>
               </tr>
             <% }) %>
           </tbody>
         </table>
       </div>
-    <% } %>
+    </div>
+
+    <!-- HORÁRIOS -->
+    <div class="tab-panel" id="tab-hours">
+      <h1>Horário de Funcionamento</h1>
+      <div class="sub">Define os dias e horas em que aceitas marcações</div>
+      <div class="hours-grid">
+        <% hours.forEach(h => { %>
+          <div class="hours-row" data-weekday="<%= h.weekday %>">
+            <span class="day-name"><%= h.name %></span>
+            <label class="day-toggle">
+              <input type="checkbox" class="day-active" <%= h.active ? 'checked' : '' %> onchange="toggleDayInputs(this)">
+              Aberto
+            </label>
+            <input type="time" class="day-start" value="<%= h.start_time %>" <%= h.active ? '' : 'disabled' %>>
+            <span>—</span>
+            <input type="time" class="day-end" value="<%= h.end_time %>" <%= h.active ? '' : 'disabled' %>>
+          </div>
+        <% }) %>
+      </div>
+      <button class="save-hours-btn" onclick="saveHours()">Guardar horários</button>
+      <span class="save-msg" id="hoursSaveMsg">✓ Guardado</span>
+    </div>
   </main>
 
   <script>
-    async function actOn(id, action, btn) {
+    // ---- Tabs ----
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+        btn.classList.add('active');
+        document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
+      });
+    });
+
+    // ---- Marcações: aceitar/recusar ----
+    async function actOnBooking(id, action, btn) {
       btn.disabled = true;
       btn.textContent = '…';
       try {
@@ -148,6 +258,59 @@
         alert('Erro ao atualizar. Tenta de novo.');
         btn.disabled = false;
         btn.textContent = action === 'accept' ? 'Aceitar' : 'Recusar';
+      }
+    }
+
+    // ---- Preços: guardar por serviço ----
+    async function saveService(id, btn) {
+      const row = document.querySelector(`tr[data-svc-id="${id}"]`);
+      const price = row.querySelector('[data-field="price"]').value;
+      const duration_minutes = row.querySelector('[data-field="duration_minutes"]').value;
+      const active = row.querySelector('[data-field="active"]').checked;
+      btn.textContent = '…';
+      try {
+        const res = await fetch(`/api/admin/services/${id}`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ price, duration_minutes, active })
+        });
+        if (!res.ok) throw new Error('fail');
+        btn.textContent = 'Guardado ✓';
+        btn.classList.add('saved');
+        setTimeout(() => { btn.textContent = 'Guardar'; btn.classList.remove('saved'); }, 1800);
+      } catch (e) {
+        btn.textContent = 'Erro';
+        setTimeout(() => { btn.textContent = 'Guardar'; }, 1800);
+      }
+    }
+
+    // ---- Horários ----
+    function toggleDayInputs(checkbox) {
+      const row = checkbox.closest('.hours-row');
+      row.querySelector('.day-start').disabled = !checkbox.checked;
+      row.querySelector('.day-end').disabled = !checkbox.checked;
+    }
+
+    async function saveHours() {
+      const rows = document.querySelectorAll('.hours-row');
+      const days = Array.from(rows).map(row => ({
+        weekday: parseInt(row.dataset.weekday),
+        active: row.querySelector('.day-active').checked,
+        start_time: row.querySelector('.day-start').value,
+        end_time: row.querySelector('.day-end').value
+      }));
+      const msg = document.getElementById('hoursSaveMsg');
+      try {
+        const res = await fetch('/api/admin/hours', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ days })
+        });
+        if (!res.ok) throw new Error('fail');
+        msg.classList.add('show');
+        setTimeout(() => msg.classList.remove('show'), 2000);
+      } catch (e) {
+        alert('Erro ao guardar horários. Tenta de novo.');
       }
     }
   </script>

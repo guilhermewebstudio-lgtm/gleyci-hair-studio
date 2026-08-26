@@ -292,7 +292,7 @@ app.post('/api/bookings/:id/cancel', requireLogin, async (req, res) => {
   res.json({ success: true });
 });
 
-// ---- Admin: gestão de marcações ----
+// ---- Admin: gestão de marcações, preços e horários ----
 app.get('/gestao', requireAdmin, async (req, res) => {
   const { rows: bookings } = await pool.query(
     `SELECT b.*, s.name_pt, u.name AS client_name, u.phone, u.email FROM bookings b
@@ -302,7 +302,22 @@ app.get('/gestao', requireAdmin, async (req, res) => {
      ORDER BY (b.status = 'pending') DESC, b.booking_date ASC, b.start_time ASC`
   );
   const { rows: services } = await pool.query('SELECT * FROM services ORDER BY display_order');
-  res.render('admin', { bookings, services });
+  const { rows: hoursRows } = await pool.query('SELECT * FROM availability_rules ORDER BY weekday');
+
+  // Monta os 7 dias da semana, preenchendo com "fechado" onde não há regra
+  const weekdayNames = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
+  const hours = weekdayNames.map((name, i) => {
+    const rule = hoursRows.find(r => r.weekday === i);
+    return {
+      weekday: i,
+      name,
+      active: rule ? rule.active : false,
+      start_time: rule ? rule.start_time.slice(0, 5) : '09:00',
+      end_time: rule ? rule.end_time.slice(0, 5) : '19:00'
+    };
+  });
+
+  res.render('admin', { bookings, services, hours });
 });
 
 app.post('/api/admin/bookings/:id/accept', requireAdmin, async (req, res) => {
@@ -321,6 +336,49 @@ app.post('/api/admin/bookings/:id/reject', requireAdmin, async (req, res) => {
   );
   if (!rows.length) return res.status(404).json({ error: 'Marcação não encontrada.' });
   res.json({ success: true, booking: rows[0] });
+});
+
+// ---- Admin: editar preços/duração dos serviços ----
+app.post('/api/admin/services/:id', requireAdmin, async (req, res) => {
+  const { price, duration_minutes, active } = req.body;
+  try {
+    const { rows } = await pool.query(
+      `UPDATE services SET price = $1, duration_minutes = $2, active = $3 WHERE id = $4 RETURNING *`,
+      [price, duration_minutes, active !== false, req.params.id]
+    );
+    if (!rows.length) return res.status(404).json({ error: 'Serviço não encontrado.' });
+    res.json({ success: true, service: rows[0] });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Erro ao atualizar serviço.' });
+  }
+});
+
+// ---- Admin: editar horários de funcionamento (semana completa) ----
+app.post('/api/admin/hours', requireAdmin, async (req, res) => {
+  const { days } = req.body; // [{weekday, active, start_time, end_time}, ...] x7
+  if (!Array.isArray(days)) return res.status(400).json({ error: 'Formato inválido.' });
+  const client = await pool.connect();
+  try {
+    await client.query('BEGIN');
+    await client.query('DELETE FROM availability_rules');
+    for (const day of days) {
+      if (day.active) {
+        await client.query(
+          `INSERT INTO availability_rules (weekday, start_time, end_time, active) VALUES ($1,$2,$3,TRUE)`,
+          [day.weekday, day.start_time, day.end_time]
+        );
+      }
+    }
+    await client.query('COMMIT');
+    res.json({ success: true });
+  } catch (err) {
+    await client.query('ROLLBACK');
+    console.error(err);
+    res.status(500).json({ error: 'Erro ao atualizar horários.' });
+  } finally {
+    client.release();
+  }
 });
 
 app.post('/api/admin/block-date', requireAdmin, async (req, res) => {
