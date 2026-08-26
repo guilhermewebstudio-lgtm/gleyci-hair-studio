@@ -261,3 +261,21 @@ async function cancelBooking(id) {
     console.error(e);
   }
 }
+
+// ---- Repetir a animação de abertura ao clicar no logótipo ----
+function replayIntro() {
+  const intro = document.getElementById('introOverlay');
+  if (!intro) return;
+
+  intro.classList.remove('intro-done');
+
+  // Reinicia as animações CSS dos elementos internos (forçando reflow)
+  const animatedEls = intro.querySelectorAll('.intro-logo, .intro-wordmark, .intro-rule, .intro-sub, .intro-pulse');
+  animatedEls.forEach(el => {
+    el.style.animation = 'none';
+    void el.offsetWidth;
+    el.style.animation = '';
+  });
+
+  setTimeout(() => intro.classList.add('intro-done'), 2400);
+}

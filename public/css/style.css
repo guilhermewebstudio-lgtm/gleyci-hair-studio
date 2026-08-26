@@ -26,8 +26,11 @@ html { scroll-behavior: smooth; }
 
 body {
   font-family: 'Work Sans', sans-serif;
-  background: var(--surface);
-  color: var(--text);
+  background:
+    radial-gradient(ellipse 1000px 700px at 15% 0%, rgba(168,137,95,0.14), transparent 60%),
+    radial-gradient(ellipse 800px 600px at 100% 100%, rgba(168,137,95,0.08), transparent 55%),
+    linear-gradient(165deg, var(--ink) 0%, var(--ink-2) 100%);
+  color: var(--parchment);
   overflow-x: hidden;
 }
 
@@ -38,7 +41,7 @@ h1, h2, h3 { font-family: 'Fraunces', serif; font-weight: 500; letter-spacing: -
   font-size: 0.7rem;
   text-transform: uppercase;
   letter-spacing: 0.24em;
-  color: var(--wine);
+  color: var(--gold);
 }
 
 /* ================= INTRO / OPENING ANIMATION ================= */
@@ -218,7 +221,7 @@ section { padding: 140px 5%; }
 .section-title { margin-bottom: 64px; max-width: 640px; }
 .section-title .eyebrow { display: block; margin-bottom: 16px; }
 .section-title h2 { font-size: clamp(2rem, 3.4vw, 3rem); }
-.section-line { width: 100%; height: 1px; background: var(--line); margin-top: 22px; position: relative; overflow: hidden; }
+.section-line { width: 100%; height: 1px; background: rgba(247,242,233,0.12); margin-top: 22px; position: relative; overflow: hidden; }
 .section-line::after {
   content: ''; position: absolute; left: -100%; top: 0; width: 100%; height: 100%;
   background: var(--gold);
@@ -238,15 +241,15 @@ section { padding: 140px 5%; }
 .gallery-item:hover::after { opacity: 1; }
 
 /* ================= SERVICES / PRICES ================= */
-.services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1px; background: var(--line); border: 1px solid var(--line); }
-.service-card { background: var(--surface); padding: 44px 36px; position: relative; transition: background 0.35s, transform 0.35s; }
-.service-card:hover { background: white; transform: translateY(-2px); z-index: 2; box-shadow: 0 20px 50px rgba(21,17,13,0.08); }
-.service-card .tone-dot { width: 7px; height: 7px; border-radius: 50%; margin-bottom: 20px; box-shadow: 0 0 0 4px rgba(184,147,90,0.12); }
-.service-card h3 { font-size: 1.2rem; margin-bottom: 12px; font-weight: 450; }
-.service-card p { font-size: 0.86rem; color: var(--text-soft); margin-bottom: 28px; min-height: 40px; line-height: 1.6; font-weight: 300; }
-.service-card .price-row { display: flex; justify-content: space-between; align-items: baseline; padding-top: 18px; border-top: 1px solid var(--line); }
-.service-card .price { font-family: 'Fraunces', serif; font-size: 1.5rem; color: var(--wine); font-weight: 400; }
-.service-card .duration { font-size: 0.68rem; color: var(--text-soft); font-family: 'Space Mono', monospace; letter-spacing: 0.05em; }
+.services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1px; background: rgba(247,242,233,0.08); border: 1px solid rgba(247,242,233,0.08); }
+.service-card { background: rgba(247,242,233,0.02); padding: 44px 36px; position: relative; transition: background 0.35s, transform 0.35s; }
+.service-card:hover { background: rgba(247,242,233,0.06); transform: translateY(-2px); z-index: 2; box-shadow: 0 20px 50px rgba(0,0,0,0.25); }
+.service-card .tone-dot { width: 7px; height: 7px; border-radius: 50%; margin-bottom: 20px; box-shadow: 0 0 0 4px rgba(184,147,90,0.18); }
+.service-card h3 { font-size: 1.2rem; margin-bottom: 12px; font-weight: 450; color: var(--parchment); }
+.service-card p { font-size: 0.86rem; color: rgba(247,242,233,0.55); margin-bottom: 28px; min-height: 40px; line-height: 1.6; font-weight: 300; }
+.service-card .price-row { display: flex; justify-content: space-between; align-items: baseline; padding-top: 18px; border-top: 1px solid rgba(247,242,233,0.1); }
+.service-card .price { font-family: 'Fraunces', serif; font-size: 1.5rem; color: var(--gold-light); font-weight: 400; }
+.service-card .duration { font-size: 0.68rem; color: rgba(247,242,233,0.45); font-family: 'Space Mono', monospace; letter-spacing: 0.05em; }
 
 /* ================= LOCATION & HOURS ================= */
 .location-grid { display: grid; grid-template-columns: 1.3fr 1fr; gap: 40px; align-items: stretch; }
@@ -260,19 +263,19 @@ section { padding: 140px 5%; }
 .hours-table { max-width: 640px; display: flex; flex-direction: column; }
 .hours-day-row {
   display: flex; justify-content: space-between; align-items: center;
-  padding: 18px 22px; border-bottom: 1px solid var(--line);
+  padding: 18px 22px; border-bottom: 1px solid rgba(247,242,233,0.1);
   transition: background 0.25s;
 }
 .hours-day-row:last-child { border-bottom: none; }
 .hours-day-name { font-family: 'Fraunces', serif; font-size: 1.05rem; display: flex; align-items: center; gap: 12px; }
-.hours-day-time { font-family: 'Space Mono', monospace; font-size: 0.88rem; color: var(--text-soft); }
+.hours-day-time { font-family: 'Space Mono', monospace; font-size: 0.88rem; color: rgba(247,242,233,0.55); }
 .hours-day-time.closed { opacity: 0.5; }
-.hours-day-row.is-today { background: rgba(168,137,95,0.1); border-radius: 4px; padding-left: 22px; }
-.hours-day-row.is-today .hours-day-name { color: var(--wine); font-style: italic; }
-.hours-day-row.is-today .hours-day-time { color: var(--text); font-weight: 600; }
+.hours-day-row.is-today { background: rgba(168,137,95,0.12); border-radius: 4px; padding-left: 22px; }
+.hours-day-row.is-today .hours-day-name { color: var(--gold-light); font-style: italic; }
+.hours-day-row.is-today .hours-day-time { color: var(--parchment); font-weight: 600; }
 .today-tag {
   font-family: 'Space Mono', monospace; font-size: 0.62rem; text-transform: uppercase; letter-spacing: 0.08em;
-  background: var(--wine); color: var(--parchment); padding: 3px 9px; border-radius: 20px;
+  background: var(--gold); color: var(--ink); padding: 3px 9px; border-radius: 20px;
 }
 
 /* ================= BOOKING ================= */
@@ -340,7 +343,7 @@ select option { background: var(--ink); color: var(--parchment); }
 .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(21,17,13,0.85); z-index: 2000; align-items: center; justify-content: center; backdrop-filter: blur(4px); }
 .modal-overlay.active { display: flex; animation: modalFadeIn 0.25s ease; }
 @keyframes modalFadeIn { from { opacity: 0; } to { opacity: 1; } }
-.modal-box { background: var(--parchment); padding: 40px; border-radius: 10px; width: 92%; max-width: 420px; position: relative; animation: modalPop 0.3s cubic-bezier(0.34,1.56,0.64,1); max-height: 86vh; overflow-y: auto; }
+.modal-box { background: var(--parchment); color: var(--text); padding: 40px; border-radius: 10px; width: 92%; max-width: 420px; position: relative; animation: modalPop 0.3s cubic-bezier(0.34,1.56,0.64,1); max-height: 86vh; overflow-y: auto; }
 @keyframes modalPop { from { opacity: 0; transform: scale(0.94) translateY(10px); } to { opacity: 1; transform: scale(1) translateY(0); } }
 .modal-box h2 { margin-bottom: 24px; font-size: 1.5rem; }
 .modal-box input {
@@ -376,7 +379,7 @@ select option { background: var(--ink); color: var(--parchment); }
 .chat-panel {
   position: fixed; bottom: 96px; right: 24px; width: 340px; max-width: calc(100vw - 32px);
   height: 460px; max-height: 70vh;
-  background: var(--parchment); border-radius: 12px; box-shadow: 0 20px 60px rgba(0,0,0,0.35);
+  background: var(--parchment); color: var(--text); border-radius: 12px; box-shadow: 0 20px 60px rgba(0,0,0,0.35);
   display: flex; flex-direction: column; overflow: hidden;
   z-index: 950;
   opacity: 0; transform: translateY(16px) scale(0.97); pointer-events: none;
