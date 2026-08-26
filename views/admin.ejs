@@ -13,7 +13,12 @@
       --ok: #4C7A5E; --pending: #B98A2E; --danger: #A5432E;
     }
     * { margin:0; padding:0; box-sizing:border-box; }
-    body { font-family:'Work Sans', sans-serif; background:#E9E3D6; color:var(--text); }
+    body {
+      font-family:'Work Sans', sans-serif; color:var(--text); min-height: 100vh;
+      background:
+        radial-gradient(ellipse 700px 500px at 85% 0%, rgba(168,137,95,0.10), transparent 60%),
+        #E4DCC9;
+    }
 
     header {
       background: linear-gradient(165deg, var(--ink) 0%, var(--ink-2) 100%);
@@ -49,14 +54,15 @@
     h1 { font-family:'Fraunces', serif; font-style:italic; color:var(--ink); margin-bottom:6px; font-size:1.6rem; }
     .sub { color:var(--text-soft); font-family:'Space Mono', monospace; font-size:0.76rem; margin-bottom:26px; text-transform:uppercase; letter-spacing:0.05em; }
 
-    .table-wrap { background:white; border-radius:8px; overflow:hidden; box-shadow:0 10px 40px rgba(21,17,13,0.08); }
+    .table-wrap { background:var(--parchment); border-radius:8px; overflow-x:auto; box-shadow:0 10px 40px rgba(21,17,13,0.1); border:1px solid var(--line); }
     table { width:100%; border-collapse:collapse; }
     th, td { padding:16px 18px; text-align:left; border-bottom:1px solid var(--line); font-size:0.9rem; vertical-align:middle; }
     th { background:var(--ink); color:var(--parchment); font-family:'Space Mono',monospace; font-size:0.7rem; text-transform:uppercase; letter-spacing:0.06em; font-weight:400; }
     tbody tr:hover { background:#FBF8F0; }
     tbody tr:last-child td { border-bottom:none; }
 
-    .badge { background:var(--gold); color:var(--ink); padding:5px 12px; border-radius:2px; font-size:0.74rem; font-weight:600; font-family:'Space Mono',monospace; }
+    .badge { background:var(--gold); color:var(--ink); padding:6px 12px; border-radius:2px; font-size:0.72rem; font-weight:600; font-family:'Space Mono',monospace; white-space:nowrap; display:inline-block; }
+    #tab-bookings td:nth-child(7) { white-space:nowrap; }
     .status-badge { display:inline-flex; align-items:center; gap:6px; font-family:'Space Mono',monospace; font-size:0.68rem; text-transform:uppercase; letter-spacing:0.05em; padding:5px 12px; border-radius:2px; }
     .status-badge.pending { background:rgba(185,138,46,0.14); color:var(--pending); }
     .status-badge.confirmed { background:rgba(76,122,94,0.14); color:var(--ok); }
