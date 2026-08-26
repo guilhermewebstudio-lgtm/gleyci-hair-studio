@@ -221,7 +221,7 @@ async function openMyBookings() {
     const res = await fetch('/api/my-bookings');
     const data = await res.json();
     if (!data.bookings || !data.bookings.length) {
-      list.innerHTML = `<p style="color:var(--text-soft); font-size:0.9rem;">${NO_BOOKINGS_YET}</p>`;
+      list.innerHTML = `<div class="mybookings-empty"><div class="icon">${LANG === 'pt' ? 'Sem marcações' : 'No bookings'}</div><p>${NO_BOOKINGS_YET}</p></div>`;
       return;
     }
     list.innerHTML = '';

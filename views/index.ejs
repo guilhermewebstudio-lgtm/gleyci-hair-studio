@@ -257,9 +257,18 @@
 
   <!-- Modal Minhas Marcações -->
   <div class="modal-overlay" id="myBookingsModal">
-    <div class="modal-box" style="max-width:480px;">
+    <div class="modal-box mybookings-box" style="max-width:480px;">
       <span class="modal-close" onclick="closeMyBookings()">&times;</span>
-      <h2><%= T.my_bookings_title %></h2>
+      <div class="mybookings-header">
+        <svg class="brand-mark" viewBox="0 0 72 72" fill="none" width="40" height="40">
+          <circle cx="36" cy="36" r="34.5" stroke="var(--gold)" stroke-width="1" fill="none"/>
+          <text x="36" y="46" text-anchor="middle" font-family="Fraunces, serif" font-style="italic" font-size="30" fill="var(--gold)">GF</text>
+        </svg>
+        <div>
+          <h2 style="margin-bottom:2px;"><%= T.my_bookings_title %></h2>
+          <div class="mybookings-greeting"><% if (user) { %><%= lang === 'pt' ? 'Olá, ' : 'Hi, ' %><%= user.name.split(' ')[0] %><% } %></div>
+        </div>
+      </div>
       <div class="mybookings-list" id="myBookingsList"></div>
     </div>
   </div>
@@ -279,6 +288,9 @@
       name_pt: s.name_pt, name_en: s.name_en, price: s.price, duration: s.duration_minutes
     }))) %>;
     window.SERVICES_DATA = SERVICES_DATA;
+    window.HOURS_DATA = <%- JSON.stringify(hours.map(h => ({
+      weekday: h.weekday, active: h.active, start_time: h.start_time, end_time: h.end_time
+    }))) %>;
   </script>
   <script src="/js/main.js"></script>
   <script src="/js/chatbot.js"></script>
