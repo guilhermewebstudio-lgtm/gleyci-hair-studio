@@ -14,21 +14,23 @@
     }
     * { margin:0; padding:0; box-sizing:border-box; }
     body {
-      font-family:'Work Sans', sans-serif; color:var(--text); min-height: 100vh;
+      font-family:'Work Sans', sans-serif; color:var(--parchment); min-height: 100vh;
       background:
-        radial-gradient(ellipse 700px 500px at 85% 0%, rgba(168,137,95,0.10), transparent 60%),
-        #E4DCC9;
+        radial-gradient(ellipse 900px 600px at 15% 0%, rgba(168,137,95,0.14), transparent 60%),
+        radial-gradient(ellipse 700px 500px at 100% 100%, rgba(168,137,95,0.08), transparent 55%),
+        linear-gradient(165deg, var(--ink) 0%, var(--ink-2) 100%);
     }
 
     header {
-      background: linear-gradient(165deg, var(--ink) 0%, var(--ink-2) 100%);
+      background: rgba(21,17,13,0.5);
       color: var(--parchment); padding: 26px 5%;
       display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:16px;
+      border-bottom: 1px solid rgba(168,137,95,0.2);
     }
-    .brand { display:flex; align-items:center; gap:10px; }
+    .brand { display:flex; align-items:center; gap:10px; text-decoration:none; cursor:pointer; }
     .brand-mark circle { fill:none; stroke:var(--gold); stroke-width:1; }
     .brand-mark text { font-family:'Fraunces',serif; font-style:italic; fill:var(--gold); font-size:26px; }
-    .brand-word { font-family:'Fraunces',serif; font-style:italic; font-size:1.1rem; }
+    .brand-word { font-family:'Fraunces',serif; font-style:italic; font-size:1.1rem; color:var(--parchment); }
     .header-right { display:flex; align-items:center; gap:14px; }
     .header-sub { font-family:'Space Mono',monospace; font-size:0.72rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--gold); opacity:0.9; }
     .back-link {
@@ -40,19 +42,19 @@
 
     main { padding: 44px 5% 80px; max-width: 1100px; margin: 0 auto; }
 
-    .tabs { display:flex; gap:6px; margin-bottom:34px; border-bottom:1px solid var(--line); }
+    .tabs { display:flex; gap:6px; margin-bottom:34px; border-bottom:1px solid rgba(247,242,233,0.15); }
     .tab-btn {
       background:none; border:none; padding:12px 22px; cursor:pointer;
       font-family:'Space Mono',monospace; font-size:0.8rem; text-transform:uppercase; letter-spacing:0.06em;
-      color:var(--text-soft); border-bottom:2px solid transparent; transition:color 0.2s, border-color 0.2s;
+      color:rgba(247,242,233,0.5); border-bottom:2px solid transparent; transition:color 0.2s, border-color 0.2s;
     }
-    .tab-btn.active { color:var(--wine); border-bottom-color:var(--wine); }
+    .tab-btn.active { color:var(--gold-light); border-bottom-color:var(--gold); }
     .tab-panel { display:none; }
     .tab-panel.active { display:block; animation: fadeIn 0.3s ease; }
     @keyframes fadeIn { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:translateY(0); } }
 
-    h1 { font-family:'Fraunces', serif; font-style:italic; color:var(--ink); margin-bottom:6px; font-size:1.6rem; }
-    .sub { color:var(--text-soft); font-family:'Space Mono', monospace; font-size:0.76rem; margin-bottom:26px; text-transform:uppercase; letter-spacing:0.05em; }
+    h1 { font-family:'Fraunces', serif; font-style:italic; color:var(--parchment); margin-bottom:6px; font-size:1.6rem; }
+    .sub { color:var(--gold-light); opacity:0.8; font-family:'Space Mono', monospace; font-size:0.76rem; margin-bottom:26px; text-transform:uppercase; letter-spacing:0.05em; }
 
     .table-wrap { background:var(--parchment); border-radius:8px; overflow-x:auto; box-shadow:0 10px 40px rgba(21,17,13,0.1); border:1px solid var(--line); }
     table { width:100%; border-collapse:collapse; }
@@ -122,13 +124,13 @@
 </head>
 <body>
   <header>
-    <div class="brand">
+    <a href="/" class="brand">
       <svg class="brand-mark" width="38" height="38" viewBox="0 0 72 72" fill="none">
         <circle cx="36" cy="36" r="34.5"/>
         <text x="36" y="46" text-anchor="middle">GF</text>
       </svg>
       <span class="brand-word">Gleyci Felix</span>
-    </div>
+    </a>
     <div class="header-right">
       <span class="header-sub">Painel de Gestão</span>
       <a href="/" class="back-link">← Voltar ao site</a>
