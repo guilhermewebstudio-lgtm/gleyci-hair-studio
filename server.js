@@ -64,7 +64,7 @@ const translations = {
     show_password: "Mostrar palavra-passe",
     location_tag: "Onde estamos", location_title: "Localização & Horários",
     hours_title: "Horário", day_tue_sat: "Terça — Sábado", day_sun_mon: "Domingo e Segunda", closed: "Encerrado",
-    address_title: "Morada", address_placeholder: "Lisboa, Portugal — morada exata brevemente",
+    address_title: "Morada", address_placeholder: "R. das Pedralvas 15, Lj 12, 1500-487 Lisboa",
     open_maps: "Abrir no Google Maps"
   },
   en: {
@@ -100,7 +100,7 @@ const translations = {
     show_password: "Show password",
     location_tag: "Where we are", location_title: "Location & Hours",
     hours_title: "Hours", day_tue_sat: "Tuesday — Saturday", day_sun_mon: "Sunday & Monday", closed: "Closed",
-    address_title: "Address", address_placeholder: "Lisbon, Portugal — exact address coming soon",
+    address_title: "Address", address_placeholder: "R. das Pedralvas 15, Lj 12, 1500-487 Lisboa",
     open_maps: "Open in Google Maps"
   }
 };
